@@ -1,0 +1,398 @@
+# 分享自己实现的alpha数据库，一行代码保存所有alpha，并进行灵活查询！
+
+- **链接**: https://support.worldquantbrain.com[Commented] 分享自己实现的alpha数据库一行代码保存所有alpha并进行灵活查询_28883408702743.md
+- **作者**: HQ17963
+- **发布时间/热度**: 1年前, 得票: 71
+
+## 帖子正文
+
+本文基于纯python实现了一个具有添加和查询功能的alpha数据库。在此基础上实现了一行代码从旧到新获取所有alpha的操作。这份代码（见文末）经过较长时期使用，已充分验证了功能。
+
+**用例1：创建/打开alpha数据库，并打印各区域alpha的保存情况。**
+
+```
+from sim_alpha_database import SimAlphaDatabasedata_dir_path=r'sim_alpha_database' # 可自定义储存位置sim_alpha_database=SimAlphaDatabase(data_dir_path)print(sim_alpha_database.region_universe_info_dict)
+```
+
+结果：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> {('CHN'
+> TOPzBBU' ): ['2824-18-38110:81:84-84:88
+> 0,1599, [ `nglooza' ]],
+> ( 'USA
+> TOP1880' ): ['2824-11-27189:34:03-85:80
+> 238,
+> ['7nralwz']],
+> ( 'USA
+> TOP3888'): [`2824-12-82710:47:28-85:80
+> 12,
+> 124892, [ 'IpkEVZM' ]],
+> ( 'USA
+> TOP5BB' ):
+> ['2024-18-23103:54:52-84:80'
+> 9, ['6921E0]' ]],
+> ( "USA
+> TOP2B8' ):
+> ['2824-11-38T16:37:80-05:80'
+> 15894,
+> [ 'NRYSLZE' ,
+> ZRleg8X' ]],
+> ('EUR
+> ILLIQUID_MINVOLIN ):
+> ['2824-11-30T01:39:18-05:88
+> 1933,
+> ['WErGIdp' ]],
+> ('ASI
+> MINVOLIM ):
+> ['2824-12-87123:11:39-85:88
+> 9887,
+> [ 'WAwnggk' ]],
+> AR
+> TOP6BB" ): ['2024-12-22701:33:21-05:80
+> 29,296876, ['7ZPAL7Z' ]],
+> JPN
+> TOPI688' ):
+> ['2824-12-86189:39:45-85:80
+> 11995,
+> [ 'KGRBZWE
+> B8zalRM' ]],
+> ( 'KOR
+> TOPGBB" ): ['2024-12-28128:01:04-05:80` _
+> 249612,
+> [ 'Nkqlqw ]],
+> ( 'EUR
+> TOP12O8' ):
+> ['2824-12-29122:26:36-85:80
+> 10,
+> 102155,
+> [ 'X7PRGSX'
+> OQAO7WG' ]]}
+> 24,
+
+
+说明：该字典为每个区域已保存的alpha信息。其中键是(region, universe)参数，值是一个长度为4的列表。第1个参数为“该地区已保存的最新alpha的创建时间”，第2个参数为“分块保存的文件数”，第3个参数为“该地区已保存的alpha数量”，第4个参数为“最新创建时间相同的alpha_id”（用于避免重复保存相同的alpha）。
+
+**用例2：保存所有回测的alpha。**
+
+```
+get_alpha_up_to_date()
+```
+
+结果：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Starting to fetch alphas with time string: 2024-12-31702:29:09-05:80
+> Fetching URL: https: Llapi worldqyantbrain comLusersLselflalphas?limit=5gg
+> Fetched
+> 5O results.
+> Incrementing offset to:
+> 58
+> 181
+> Fetching URL: https:Llapi worldqyantbrain comlusersLselflalphas?limits5gg
+> Fetched
+> 5O results.
+> Incrementing Offset
+> to:
+> 188
+> 181
+> Fetching URL: https; Llapi worldqyantbrain comlusersLselflalphas?limit=5@g
+> Fetched 58 results.
+> Incrementing Offset
+> to:
+> 158
+> 181
+> Fetching URL: https:Llepi worldqyantbrain comluserslselflalphas?limitsSeg
+> Fetched
+> 31 results.
+> Incrementing offset
+> to:
+> 288
+> 181
+> Fetching URL: https:Llapi worldqyantbrain comlusersLselflalphas?limit=seg
+> Fetched
+> 8 results.
+> No more results found, returning:
+
+
+说明：数据库中已有部分旧alpha时，只会获取新的alpha。若alpha数量超过10000，会自动分阶段获取全部alpha。
+
+**用例3：查询符合条件的alpha。**
+
+例如，查询AMR区域，TOP600 Universe，表达式含有”// using Time-Series Sentiment Comparison Template”字符串，且可进行Check Submission（即 **IS Testing Status** 中不存在fail）的alpha。
+
+定义查询函数：
+
+```
+def filter(sim_alpha_result_list):    picked_alphas=[]    for result in sim_alpha_result_list:        code=result['regular']['code']                # lines=code.split('\n')        # first_line=lines[0] # 可按行查询        if '// using Time-Series Sentiment Comparison Template' not in code:            continue                    fitness=result['is']['fitness']        sharpe=result['is']['sharpe']        turnover=result['is']['turnover']        longCount=result['is']['longCount']        shortCount=result['is']['shortCount']        drawdown=result['is']['drawdown']        margin=result['is']['margin']        if fitness is None: # 排除没有fitness值的异常alpha            continue        # if abs(fitness)<1: # 排除fitness绝对值小于1的alpha        #     continue        # if abs(sharpe)<1.58: # 排除sharpe绝对值小于1.58的alpha        #     continue        # if  longCount<60 or shortCount<60: # 排除longcount或shortcount小于60的alpha        #     continue        # if sharpe>8: # 排除pnl曲线为直角的异常alpha        #     assert abs(drawdown)<0.01, result['id']        #     continue        # 排除IS Testing Status中有fail的alpha        checks=result['is']['checks']        check_dict={}        ok=True        for check in checks:            check_dict[check['name']]=check            if check['result'] not in ['PASS','PENDING','WARNING']:                assert check['result']=='FAIL'                ok=False                break         if not ok:            continue            picked_alphas.append(result)    return picked_alphas
+```
+
+查询：
+
+```
+region="AMR"universe="TOP600"picked_alphas=sim_alpha_database.do_filter(filter,region,universe)print(f'picked_alphas: {len(picked_alphas)}')
+```
+
+结果：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> picked_alphas:
+> 1918
+
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> picked_alphas [8]
+> 00s
+> {'id
+> GGNe2SP
+> Vype
+> REGULAR
+> author
+> H017963
+> settinBs
+> {'instrumentType
+> EQUITY
+> region
+> AR
+> universe
+> TOP68O
+> delay
+> decay
+> neutralization
+> COUNTRY
+> truncation
+> 88,
+> pasteurization
+> QN'
+> unitHandling
+> VERIFY
+> nanHandline
+> ON'
+> language
+> FASTEXPR
+> Visualization
+> False};
+> regular
+> Code
+> 11 using
+> Time-Series
+> Sentiment Comparison Templatelnpositive
+> sentiment
+> description
+> None,
+> operatorCount
+> 8},
+> dateCreated
+> 2824-12-16123:56:59-85:88
+> datesuboitted
+> None,
+> datelodified
+> 2824-12-16T23:57:80-85:88
+> name
+> None,
+> favorite
+> False
+> hidden
+> False,
+
+
+**关于查询性能：**
+
+数据库实现了查询缓存功能，对于相同的查询函数，初次查询耗时稍长，后续查询极快。
+
+例如，在笔者电脑上，对AMR区域，TOP600 Universe中的296876个alpha进行上述查询，初次查询时间为4.3s，后续查询时间<0.1s。
+
+**关于存储空间：**
+
+数据库实现了3倍左右的数据压缩，平均使用空间为6.2MB/万alpha。
+
+数据库默认以1万个alpha进行分块储存和查询，避免将所有alpha装入内存，导致内存占用过多的问题。
+
+这份代码还有许多可以改进的地方，若有任何问题、看法、建议，欢迎在评论区留言，欢迎点赞支持，谢谢！
+
+---
+
+## 讨论与评论 (14)
+
+### 评论 #1 (作者: HQ17963, 时间: 1年前)
+
+get_alpha_up_to_date()代码：
+
+```
+def get_alpha_up_to_date():    global s,sim_alpha_database    """    https://api.worldquantbrain.com/users/self/alphas?limit=50&offset=0&status=UNSUBMITTED%1FIS_FAIL&dateCreated%3E=2024-11-29T00:00:00-05:00&dateCreated%3C2024-12-01T00:00:00-05:00&order=-dateCreated&hidden=false    """    url_tmeplate="https://api.worldquantbrain.com/users/self/alphas?limit=50&status=UNSUBMITTED%1FIS_FAIL&order=dateCreated&hidden=false" # 从旧到新排序    # 为了终止后重新开始，先去重&排序    sim_alpha_database.save_all()    time_str=sim_alpha_database.get_all_last_alpha_time()    if time_str is None:        # raise NotImplementedError()        time_str='2000-01-01T00:00:00-00:00'    print(f"Starting to fetch alphas with time string: {time_str}")    while True:        url_ori=url_tmeplate+f'&dateCreated>={time_str}' # 选取更新的alpha        offset=0        while True:            url=url_ori+f"&offset={offset}"            print(f"Fetching URL: {url}")            response = s.get(url)            if response.status_code==429:                time.sleep(60)                continue            if response.status_code==401:                print(f'重新登录{response.status_code} {response.text}')                s=login()                continue            if response.status_code != 200:                # raise Exception(f"Failed to get alphas: {response.status_code} {response.text}")                print(f"Failed to get alphas: {response.status_code} {response.text}")                continue            data = response.json()                        print(f"Fetched {len(data['results'])} results.")            sim_alpha_database.add_multi_alpha_data(data["results"])                        if len(data['results'])==0:                print("No more results found, returning.")                sim_alpha_database.save_all()                return            offset += 50            print(f"Incrementing offset to: {offset} / {data['count']}")            if offset==10000:                sim_alpha_database.save_all()                print(f"Updating time_str to: {sim_alpha_database.get_all_last_alpha_time()}")                time_str=sim_alpha_database.get_all_last_alpha_time()                break            if int(response.headers.get("RateLimit-Remaining",0))<3:                print(f"Rate limit is almost reached, sleeping for {response.headers.get('RateLimit-Reset',None)} seconds.")                time.sleep(float(response.headers.get("RateLimit-Reset",60)))
+```
+
+---
+
+### 评论 #2 (作者: HQ17963, 时间: 1年前)
+
+sim_alpha_database.py代码：
+
+```
+import functoolsimport osimport pickleimport shutilimport inspectimport bloscimport hashlibclass SimAlphaDatabase:    def __init__(self,data_dir_path):        if not os.path.exists(data_dir_path):            os.makedirs(data_dir_path)        self.data_dir_path=data_dir_path        self.region_universe_info_file_path=os.path.join(self.data_dir_path,'region_universe_info.pkl')        self.region_universe_info_dict=self.get_region_universe_info_dict() # 记录每个区域最后一条alpha的时间、储存文件的数量、alpha数量、最后时刻的alpha列表        self.region_universe_last_storage={}        # 创建缓存目录        self.cache_dir_path=os.path.join(self.data_dir_path,'search_cache')        if not os.path.exists(self.cache_dir_path):            os.makedirs(self.cache_dir_path)            def get_region_universe_info_dict(self):        """        获取region_universe_info_dict        """                if not os.path.exists(self.region_universe_info_file_path):            with open(self.region_universe_info_file_path,'wb') as f:                # pickle.dump({},f)                pickled_data = pickle.dumps({},protocol=pickle.HIGHEST_PROTOCOL)  # returns data as a bytes object                compressed_pickle = blosc.compress(pickled_data)                f.write(compressed_pickle)        with open(self.region_universe_info_file_path,'rb') as f:            data=f.read()            compressed_pickle = blosc.decompress(data)            region_universe_info_dict = pickle.loads(compressed_pickle)        return region_universe_info_dict        def save_region_universe_info_dict(self):        """        保存region_universe_info_dict        """        # 备份        backup_file_path=self.region_universe_info_file_path.replace('.pkl','.bak.pkl')        # shutil.copy(self.region_universe_info_file_path,backup_file_path)        if os.path.exists(self.region_universe_info_file_path):            # 确保源文件大小不为0，说明上次保存出错了，就不要删除备份文件            if os.path.getsize(self.region_universe_info_file_path)==0:                raise Exception('region_universe_info_file_path size is 0')        if os.path.exists(backup_file_path):            os.remove(backup_file_path)        if os.path.exists(self.region_universe_info_file_path):            os.rename(self.region_universe_info_file_path,backup_file_path)        with open(self.region_universe_info_file_path,'wb') as f:            pickled_data = pickle.dumps(self.region_universe_info_dict,protocol=pickle.HIGHEST_PROTOCOL)  # returns data as a bytes object            compressed_pickle = blosc.compress(pickled_data)            f.write(compressed_pickle)            f.flush()    def load_last_storage(self,region,universe):        """        加载region_universe_last_storage        """        key=(region,universe)        if key in self.region_universe_last_storage:            return self.region_universe_last_storage[key]        else:            if key not in self.region_universe_info_dict:                self.region_universe_info_dict[key]=[None,0,0,[]]            last_storage_path=os.path.join(self.data_dir_path,f'{region}_{universe}_pending.pkl')            if os.path.exists(last_storage_path):                with open(last_storage_path,'rb') as f:                    data=f.read()                    compressed_pickle = blosc.decompress(data)                    last_storage = pickle.loads(compressed_pickle)            else:                last_storage=[]            self.region_universe_last_storage[key]=last_storage            return last_storage        def save_all(self):        """        储存所有数据        """        for key in self.region_universe_last_storage:            if len(self.region_universe_last_storage[key])>0:                self.check_and_save(key[0],key[1])        for key in self.region_universe_last_storage:            region,universe=key            last_storage_path=os.path.join(self.data_dir_path,f'{region}_{universe}_pending.pkl')            if len(self.region_universe_last_storage[key])==0:                if os.path.exists(last_storage_path):                    os.remove(last_storage_path)            else:                with open(last_storage_path,'wb') as f:                    pickled_data = pickle.dumps(self.region_universe_last_storage[key],protocol=pickle.HIGHEST_PROTOCOL)  # returns data as a bytes object                    compressed_pickle = blosc.compress(pickled_data)                    f.write(compressed_pickle)        self.save_region_universe_info_dict()        def check_and_save(self,region,universe):        """        检查是否需要储存        """        save_count=0        key=(region,universe)        BATCH=10000        while len(self.region_universe_last_storage[key])>=BATCH:            sub_BATCH=self.region_universe_last_storage[key][:BATCH]            after_BATCH=self.region_universe_last_storage[key][BATCH:]            # 储存            with open(os.path.join(self.data_dir_path,f'{region}_{universe}_{self.region_universe_info_dict[key][1]}.pkl'),'wb') as f:                pickled_data = pickle.dumps(sub_BATCH,protocol=pickle.HIGHEST_PROTOCOL)  # returns data as a bytes object                compressed_pickle = blosc.compress(pickled_data)                f.write(compressed_pickle)            self.region_universe_last_storage[key]=after_BATCH            # 清空last_storage            last_storage_path=os.path.join(self.data_dir_path,f'{region}_{universe}_pending.pkl')            if os.path.exists(last_storage_path):                os.remove(last_storage_path)            # 更新info            self.region_universe_info_dict[key][1]+=1            save_count+=1        if save_count>0:            self.save_region_universe_info_dict()    def add_alpha_data(self,alpha_result):        """        添加一条alpha数据        """        region=alpha_result['settings']['region']        universe=alpha_result['settings']['universe']        dateCreated=alpha_result['dateCreated']        last_storage=self.load_last_storage(region,universe) # 同时会加载region_universe_info_dict                if self.get_last_alpha_time(region,universe) is not None:            if dateCreated<self.get_last_alpha_time(region,universe): # 如果当前alpha的时间小于最后一条alpha的时间，则不添加                return        key=(region,universe)        info=self.region_universe_info_dict[key]        # 更新info        if info[0] is None:            info[0]=dateCreated        else:            assert dateCreated>=info[0]            if dateCreated==info[0]: # 如果当前alpha的时间和最后一条alpha的时间相同，且在最后时刻的alpha列表中，则不添加                if alpha_result['id'] in info[3]:                    return            if dateCreated>info[0]:                info[0]=dateCreated # 更新最后一条alpha的时间                info[3]=[] # 清空最后时刻的alpha列表                                last_storage.append(alpha_result)        info[2]+=1 # 更新alpha数量        info[3].append(alpha_result['id']) # 添加到最后时刻的alpha列表                # 添加后，检查是否需要储存        self.check_and_save(region,universe)    def add_multi_alpha_data(self,alpha_result_list,save_all=True):        """        添加多条alpha数据        """        alpha_result_list.sort(key=lambda x:x['dateCreated']) # 从旧到新排序，即时间从小到大        for alpha_result in alpha_result_list:            self.add_alpha_data(alpha_result)        if save_all:            self.save_all()                def get_last_alpha_time(self,region,universe):        """        获取region_universe的最后一条alpha的时间        """        key=(region,universe)        if key not in self.region_universe_info_dict:            return None        return self.region_universe_info_dict[key][0]        def get_all_last_alpha_time(self):        """        获取所有region_universe的最后一条alpha的时间        """        a=[self.region_universe_info_dict[key][0] for key in self.region_universe_info_dict]        if len(a)==0:            return None        a.sort()        return a[-1]    """    以压缩文件形式写入/读取    with open(cache_name, "wb") as f:        pickled_data = pickle.dumps(handled_alpha_result_set,protocol=pickle.HIGHEST_PROTOCOL)  # returns data as a bytes object        compressed_pickle = blosc.compress(pickled_data)        f.write(compressed_pickle)    with open(cache_name,'rb') as f:        data=f.read()        compressed_pickle = blosc.decompress(data)        handled_alpha_result_set = pickle.loads(compressed_pickle)    """    def get_func_identifier_and_cache_file_path(self,func,region,universe):        if isinstance(func,functools.partial):            func_identifier=str({'func':inspect.getsource(func.func),'args':func.args,'kwargs':func.keywords})        else:            func_identifier=inspect.getsource(func)        hash_object = hashlib.sha256(func_identifier.encode('utf-8'))  # 将字符串编码成字节        hash_value = hash_object.hexdigest()  # 获取十六进制哈希值        cache_file_path=os.path.join(self.cache_dir_path,f'{region}_{universe}_{hash_value}.pkl')        return func_identifier,cache_file_path    def check_cache(self,func,region,universe):        """        检查缓存是否存在        """        func_identifier,cache_file_path=self.get_func_identifier_and_cache_file_path(func,region,universe)        if os.path.exists(cache_file_path):            with open(cache_file_path,'rb') as f:                data=f.read()                compressed_pickle = blosc.decompress(data)                cache= pickle.loads(compressed_pickle)                if cache['func_identifier']!=func_identifier:                    print(f'sha256相同，但func_code不同!{func_identifier} {cache["func_identifier"]}')                    os.remove(cache_file_path)                    return None                return cache        return None        def save_cache(self,func,cache,region,universe):        """        保存缓存        """        func_identifier,cache_file_path=self.get_func_identifier_and_cache_file_path(func,region,universe)        with open(cache_file_path,'wb') as f:            pickled_data = pickle.dumps(cache,protocol=pickle.HIGHEST_PROTOCOL)            compressed_pickle = blosc.compress(pickled_data)            f.write(compressed_pickle)    def do_filter(self,func,region,universe):        """        根据func过滤数据，会分批传入sim_alpha_result_list，        返回过滤后的数据        """        key=(region,universe)        last_alpha_time,storage_file_num,alpha_num,last_seconds_alpha_list=self.region_universe_info_dict[key]        if last_alpha_time is None: # 如果还没有获取到alpha，则返回空列表            assert storage_file_num==0            return []                filtered_sim_alpha_result_list=[]        # 检查缓存        func_identifier,cache_file_path=self.get_func_identifier_and_cache_file_path(func,region,universe)        cache=self.check_cache(func,region,universe)        if cache is None:            cache={}            cache['func_identifier']=func_identifier            cache['last_check_order']=-1 # 未来合并alpha缓存后，务必删除检索缓存        else:            assert cache['func_identifier']==func_identifier        assert cache['last_check_order']<=storage_file_num        cache_changed=False        last_check_order=cache['last_check_order']        # 检查缓存中已有的文件        for order in range(last_check_order+1):            filtered_sim_alpha_result_list.extend(cache[order])        # 检查缓存中没有的文件        for order in range(last_check_order+1,storage_file_num):            data_file=f'{region}_{universe}_{order}.pkl'            with open(os.path.join(self.data_dir_path,data_file),'rb') as f:                data=f.read()                compressed_pickle = blosc.decompress(data)                sim_alpha_result_list = pickle.loads(compressed_pickle)            # 在该文件块中查找            sub_filtered_sim_alpha_result_list=func(sim_alpha_result_list)            filtered_sim_alpha_result_list.extend(sub_filtered_sim_alpha_result_list)            # 更新缓存            cache[order]=sub_filtered_sim_alpha_result_list            cache['last_check_order']=order            cache_changed=True        # 更新缓存        if cache_changed:            self.save_cache(func,cache,region,universe)        # 在last_storage中查找        last_storage=self.load_last_storage(region,universe)        sub_filtered_sim_alpha_result_list=func(last_storage)        filtered_sim_alpha_result_list.extend(sub_filtered_sim_alpha_result_list)        # 保证检索结果不重复        assert len(filtered_sim_alpha_result_list)==len(set(str(alpha_result) for alpha_result in filtered_sim_alpha_result_list))        return filtered_sim_alpha_result_list
+```
+
+使用前请先安装blosc包，命令：pip install blosc
+
+---
+
+### 评论 #3 (作者: GL61467, 时间: 1年前)
+
+感谢分享，核心存储方案为pickle，为了节省空间，使用了压缩技术 blosc
+
+这里展开一下pandas自带的功能
+
+pandas to_pickle,to_hdf自带压缩功能：
+
+to_hdf:
+
+> DataFrame.to_hdf( *path_or_buf* ,  *key* ,  *mode='a'* ,  *complevel=None* ,  *complib=None* ,  *append=False* ,  *format=None* ,  *index=True* ,  *min_itemsize=None* ,  *nan_rep=None* ,  *dropna=None* ,  *data_columns=None* ,  *errors='strict'* ,  *encoding='UTF-8'* )
+
+其中  *complib*  可选项有 ：‘zlib’, ‘lzo’, ‘bzip2’, ‘blosc’}, default ‘zlib’
+
+另外 to_pickle也可以
+
+> DataFrame.to_pickle( *path* ,  *compression='infer'* ,  *protocol=5* ,  *storage_options=None* )
+
+*compression* 解释如下：
+
+For on-the-fly compression of the output data. If ‘infer’ and ‘path’ is path-like, then detect compression from the following extensions: ‘.gz’, ‘.bz2’, ‘.zip’, ‘.xz’, ‘.zst’, ‘.tar’, ‘.tar.gz’, ‘.tar.xz’ or ‘.tar.bz2’ (otherwise no compression). Set to  `None`  for no compression. Can also be a dict with key  `'method'`  set to one of { `'zip'` ,  `'gzip'` ,  `'bz2'` ,  `'zstd'` ,  `'xz'` ,  `'tar'` } and other key-value pairs are forwarded to `zipfile.ZipFile` ,  `gzip.GzipFile` ,  `bz2.BZ2File` ,  `zstandard.ZstdCompressor` ,  `lzma.LZMAFile` or  `tarfile.TarFile` , respectively. As an example, the following could be passed for faster compression and to create a reproducible gzip archive:  `compression={'method': 'gzip', 'compresslevel': 1,'mtime': 1}` .
+
+使用上述两种方法中的任意一种，将会使你的代码更简洁。
+
+另外提一点：pickle管理方式的缺陷是，小数据量还行，大数据量是需要大内存的，因为一次性读取全部数据，想象一下，一年后数据规模在千万级别以上时，你的云服务器内存可能需要升级了，如果借助数据库的话，只需要升级磁盘即可。
+
+我看文章最后有提到分片存储，这也是一个好方式，但是管理分片的话，又是一项复杂的技术。
+
+目前我使用 duckdb来管理，如果不熟悉，你也可以使用sqlite3去管理，不用server类的数据库系统，成本很小查询很快。
+另外你的 get_alpha_up_to_date是少数据的吧，最多1万行， 我的文章有解释为什么只有1万条。
+
+可以参考我的文章  [【工程技术分享】如何将自己的回测过的alpha全部下载到本地]([L2] 【工程技术分享】如何将自己的回测过的alpha全部下载到本地_28883893064599.md)
+
+升级下你的管理系统。
+
+---
+
+### 评论 #4 (作者: RX97746, 时间: 1年前)
+
+作者给我了一点启发，如果有条件的话，把alpha信息装入类似MySQL这种关系型数据库当中，用sql语言进行查询，会不会更方便
+
+---
+
+### 评论 #5 (作者: HQ17963, 时间: 1年前)
+
+感谢@GL61467的认真回复和宝贵建议！
+
+关于您提到的内存占用问题，这份代码使用分片管理方法，将alpha按时间排序进行分片储存，查询时逐个读取分片，已查询分片的内存会被自动回收，故占用内存很小。但分片储存确实带来了额外的复杂性，需要仔细设计来确保逻辑正确。
+
+感谢您有关数据库的推荐，如果出现性能瓶颈，我会考虑迁移到专门的数据库系统。最初设计时之所以用列表来储存，是考虑到若使用mysql等关系型数据库，则需要设计复杂的表以保存alpha的丰富字段，而初学时还未确定哪些字段是所需的（有些字段还需要满足一定条件才会出现）；若使用mongodb等非关系型数据库，似乎难以对alpha表达式进行灵活的查询（如查找第n行开头为特定字符串的表达式）。综合考虑之后，采用了通过自定义函数的方法进行快捷、灵活的查询。
+
+关于get_alpha_up_to_date，它是可以支持超过10000个alpha的下载的。当内层下载循环结束后，代码会更新查询条件（alpha创建时间）再次进行查询，若新的查询没有找到alpha，才会退出外层循环。
+
+关于您最后提到的文章，不知道是否是在审核的原因，点进去显示404。之后有机会一定拜读。
+
+再次感谢回复！
+
+---
+
+### 评论 #6 (作者: HQ17963, 时间: 1年前)
+
+感谢@RX97746的回复。如我上个回复所言，使用关系型数据库需要设计较为复杂的表。有关使用数据库来储存alpha，您可以参考  [【构建自己的代码框架系列】第01篇--用MySQL完美保存全部回测过的alpha – WorldQuant BRAIN]([L2] 【构建自己的代码框架系列】第01篇--用MySQL完美保存全部回测过的alpha_28770820524695.md)  这篇精彩博客。如果您不需要通过直接操作表达式来选取alpha（转而通过alpha name等方式进行选取），且已经对alpha的字段有了全面的了解，则使用数据库是更好的选择。
+
+---
+
+### 评论 #7 (作者: 顾问 LW67640 (Rank 24), 时间: 1年前)
+
+非常喜欢您这个设计思路，在使用了几天后，我修改了两个字段，把每次从服务器拉去的条数改成了100条。之后再怎么运行都报错，尝试了修复pickle文件，还原修改的字段，删除pending文件等方法后，还是无法恢复。请帮忙分析一下：{('CHN', 'TOP2000U'): ['2024-12-27T06:29:07-05:00', 0, 7681, ['djLpJgv']], ('USA', 'TOP3000'): ['2025-01-01T01:24:56-05:00', 9, 99320, ['wj5mn9Y', 'rjb3Je3', 'Q7nJ2bg']], ('USA', 'TOP1000'): ['2024-10-14T10:02:18-04:00', 0, 3, ['olElR5l']], ('USA', 'TOP500'): ['2024-10-16T11:05:52-04:00', 0, 1, ['71GJZ35']], ('USA', 'TOP200'): ['2024-10-16T11:14:15-04:00', 0, 1, ['e01LVdM']], ('GLB', 'TOP3000'): ['2024-12-12T21:43:55-05:00', 0, 8102, ['JGOwKbO']], ('ASI', 'MINVOL1M'): ['2025-01-05T05:33:17-05:00', 14, 142646, ['X7bEY9l']], ('JPN', 'TOP1600'): ['2024-12-21T01:23:04-05:00', 8, 84541, ['EG2M9q0']], ('USA', 'ILLIQUID_MINVOL1M'): ['2024-12-02T12:01:12-05:00', 2, 28490, ['r2pQGdJ']], ('GLB', 'MINVOL1M'): ['2024-12-13T21:22:56-05:00', 1, 15256, ['m559VKW', 'KGGaEV8']], ('EUR', 'TOP1200'): ['2025-01-01T01:58:09-05:00', 21, 210387, ['n7nMQgd']], ('KOR', 'TOP600'): ['2024-12-16T04:37:41-05:00', 0, 5856, ['wab0zbQ']], ('ASI', 'ILLIQUID_MINVOL1M'): ['2024-12-04T05:33:30-05:00', 0, 3206, ['VGj9wY5']], ('AMR', 'TOP600'): ['2025-01-02T06:43:24-05:00', 22, 220295, ['Al3ALYQ']], ('USA', 'TOPSP500'): ['2024-11-21T06:17:43-05:00', 0, 338, ['g9WgRbv', 'GegKMl3']], ('HKG', 'TOP800'): ['2025-01-02T06:08:25-05:00', 12, 121231, ['ElKP9vG']], ('EUR', 'ILLIQUID_MINVOL1M'): ['2024-12-03T05:06:37-05:00', 0, 4854, ['pNmJv2q']], ('TWN', 'TOP500'): ['2025-01-04T07:35:49-05:00', 1, 15469, ['kjjr2eK']], ('HKG', 'TOP500'): ['2024-12-23T02:23:49-05:00', 0, 75, ['nNE3LN8']], ('TWN', 'TOP100'): ['2024-12-13T08:45:06-05:00', 0, 150, ['m5VMAVW']]}
+Starting to fetch alphas with time string: 2025-01-02T00:00:00-00:00
+Fetching URL:  [https://api.worldquantbrain.com/users/self/alphas?limit=50&status=UNSUBMITTED%1FIS_FAIL&order=dateCreated&hidden=false&dateCreated>=2025-01-02T00:00:00-00:00&offset=0](https://api.worldquantbrain.com/users/self/alphas?limit=50&status=UNSUBMITTED%1FIS_FAIL&order=dateCreated&hidden=false&dateCreated>=2025-01-02T00:00:00-00:00&offset=0) 
+Fetched 50 results.
+Traceback (most recent call last):
+  File "/home/ubuntu/world_quant/sim_alphas2db.py", line 443, in <module>
+    get_alpha_up_to_date()
+  File "/home/ubuntu/world_quant/sim_alphas2db.py", line 415, in get_alpha_up_to_date
+    sim_alpha_database.add_multi_alpha_data(data["results"])
+  File "/home/ubuntu/world_quant/sim_alphas2db.py", line 186, in add_multi_alpha_data
+    self.add_alpha_data(alpha_result)
+  File "/home/ubuntu/world_quant/sim_alphas2db.py", line 149, in add_alpha_data
+    last_storage=self.load_last_storage(region,universe) # 同时会加载region_universe_info_dict
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/world_quant/sim_alphas2db.py", line 82, in load_last_storage
+    last_storage = pickle.loads(compressed_pickle)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+EOFError: Ran out of input
+
+---
+
+### 评论 #8 (作者: HQ17963, 时间: 1年前)
+
+[顾问 LW67640 (Rank 24)](/hc/en-us/profiles/28067010930967-顾问 LW67640 (Rank 24)) 你好，这是由于数据写入过程中，程序被中止（如ctrl+c）导致的。尝试将region_universe_info.bak.pkl替换region_universe_info.pkl，应该可以修复该问题。若还有报错，则请删除sim_alpha_database文件夹并重新拉取所有因子。
+
+---
+
+### 评论 #9 (作者: LL87164, 时间: 1年前)
+
+[HQ17963](/hc/en-us/profiles/27241930042903-HQ17963)
+
+实际使用了一下，感觉简洁、实用。几个问题如下：
+
+sim_alpha_database目录下还有几个pending.pkl文件，是什么意思，需要重新拉取吗？
+
+第2个参数为“分块保存的文件数” = 0，表示什么意思？有数据没有对应的文件？
+
+第4个参数为“最新创建时间相同的alpha_id” -- 这个参数有什么作用？
+
+另外，键是(region, delay) -- 好像是个笔误，应该是(region, universe) 吧？
+
+---
+
+### 评论 #10 (作者: HQ17963, 时间: 1年前)
+
+LL87164 嗨！你的阅读十分仔细，以下是我的回答：
+
+1. 数据库每10000个因子分成一个文件的方式储存，pending.pkl储存最新拉取的因子，一旦数量达到10000，则pending.pkl会储存成一个新的分块文件。
+2. 当“分块保存的文件数” = 0时，意味着当前(region, universe)还未储存因子，或者因子尚在在pending.pkl中。
+3. 抓取因子时，以>=“最新创建时间”为条件（等于号是确保抓取完整），有些因子的“创建时间”是相同的，如果不加以记录，就会再一次添加相同的因子。
+4. 键确实是(region, universe)，感谢指出，已修改原文。
+
+---
+
+### 评论 #11 (作者: XM75236, 时间: 1年前)
+
+力荐duckDB
+
+---------------------------------------------------------------
+-----------热爱生活热爱量化-------------------------------
+
+---------------------------------------------------------------
+
+---
+
+### 评论 #12 (作者: LL87164, 时间: 1年前)
+
+[HQ17963](/hc/en-us/profiles/27241930042903-HQ17963)
+
+多谢回复。有想过扩展到已提交的Alpha吗？想到以下两个应用点，供参考。
+
+1. 类似Alpha Distribution，但是统计的是历史所有的，不只是当季的，供Combined Performance的多样性时使用。
+
+2. 类似Performance Comparison，但比较的是自己的，不是整个 Region；或类似 PPAC 的 Merged PnL Score，供提交决策时使用。
+
+---
+
+### 评论 #13 (作者: CC21336, 时间: 1年前)
+
+对于海量数据存储，自己的心目中最佳选择还是文件存储。存储操作非常灵活而且性能优异。作者设计非常精巧，有点迷你版HBase设计的影子。
+
+---
+
+### 评论 #14 (作者: DZ31817, 时间: 9个月前)
+
+感谢分享，我目前仍使用最传统的excel来保存可提交的候选alpha信息，这样我可以手动比较、筛选、排序，且都是可视化的，比较方便，而且我只保存没有fail项的alpha，因此数据量也大大减少。对于保存全量alpha，我感觉必要性可能没那么大，当然我设想过一个场景，就是获取全量数据后用于AI训练，这种场景下大数据量是必须的。
+
+---
+

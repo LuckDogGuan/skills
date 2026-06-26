@@ -1,0 +1,735 @@
+# 【Alpha灵感】理想振幅因子
+
+- **链接**: [Commented] 【Alpha灵感】理想振幅因子.md
+- **作者**: XD81759
+- **发布时间/热度**: 1年前, 得票: 27
+
+## 帖子正文
+
+本月中旬（2024/12/09-2024/12/19），我参加了因子日历研究项目，收获颇丰，实现了15个Alpha Idea（在不同的Region产生了约60个信号），并尝试总结了一些Template，最近会整理成帖子分享给大家。本文是该系列的第1篇，Idea如下：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> 理想振幅因子
+> 对筚只股票
+> 回湖取共最近~个交另巳 (账认N=20)  的豉据,计4
+> 每巳的旅| (聂商价/晨低价1) ;
+> 淀斧收盘价e高的 ^(蚨认25%)有效爻另刁。计箅振屈均谊得到价
+> 窳临因子 Yin (A) ; 选洚收盘价较低的 ^(缺认25%)  有效爻另日。计
+> 身振幅均莅得到低价振砑因孑数学公式: Yo (A) ;
+> 汁算理恐振(因子: V() = We () - V (入)。
+> 迄明
+> 尽于段价斧尕蟠因了逆行卅剀织到&隳^菰喁因子
+> 考怂了不司价右孓习囟:l
+> 分方佑总芒异 (忘介尕恕因子#有更资的灸向逡殷p力 }
+> 逑彪力耍g。
+> (o1
+> 5,220 5221542 ?
+
+
+在Brain平台的初步实现表达式如下：
+
+```
+# Step 1: 计算每日振幅amplitude = high / low - 1;# Step 2: 定义高收盘价和低收盘价的过滤条件high_threshold = ts_percentage(close, 20, percentage=0.5);low_threshold = ts_percentage(close, 20, percentage=0.5);# Step 3: 筛选高收盘价和低收盘价对应的有效交易日V_high = ts_mean(if_else(close > high_threshold, amplitude, NAN), 20);V_low = ts_mean(if_else(close < low_threshold, amplitude, NAN), 20);# Step 4: 计算理想振幅因子ideal_amplitude_factor = V_high - V_low;-ideal_amplitude_factor
+```
+
+该Alpha在USA和GLB均产生了较强信号，经简单优化后即可submit。下图分别是该Alpha在USA和GLB的Performance。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> ACN
+> Crealeg 12102024 EST
+> anonymoUs
+> Add Alpha
+> LIS
+> 凸 Openalpha details in new tab
+> Chart
+> Pnl
+> TON
+> 750O
+> 5OOOK
+> 250Ok
+> Jul '13
+> Ju
+> Juls
+> Jul6
+> Jul8
+> Jul'19
+> Jul'20
+> Jur 2i
+> Jul 22
+  
+> [!NOTE] [图片 OCR 识别内容]
+> IS Summary
+> Period
+> A
+> Data Setulpha
+> pramidtheme: USAIDTIPrice Volume
+> ABgregate Data
+> S
+> LUTnCVer
+> 7e55
+> RCCUTIS
+> UrayoCn
+> NareII
+> 1.63
+> 24.609
+> 1.20
+> 13.2796
+> 10.349
+> 10.799600
+> SInle
+  
+> [!NOTE] [图片 OCR 识别内容]
+> A
+> Created 12/10/2024 EST
+> anonymOUs
+> Add Alpha t0 a List
+> 囚 Openalpha details in new tab
+> Chart
+> Pnl
+> TSM
+> TON
+> 50OON
+> 2013
+> 2014
+> 2015
+> 3016
+> 201
+> 2018
+> 2019
+> 2020
+> 2021
+> 2022
+  
+> [!NOTE] [图片 OCR 识别内容]
+> IS Summary
+> Period
+> BSingle Data SetAlpha
+> Pramid theme: GLBIDIIPrice Volume <
+> Aggregate Data
+> SNTO
+> TUTIOVEI
+> FIiness
+> OUO
+> OTawgO「
+> Mare
+> 1.72
+> 22.0396
+> 1.65
+> 20.2596
+> 27.13%
+> 18.399600
+
+
+（如果以上内容对您有帮助，请点点赞，谢谢）
+
+（本帖之后会在评论区继续更新，内容包括但不限于：①Alpha Idea-理想换手率因子；②受此启发得到的一个降cor且可能提升Performance的alpha优化方法；③Template-理想因子。感兴趣的小伙伴别忘了Follow喔~）
+
+---
+
+## 讨论与评论 (13)
+
+### 评论 #1 (作者: PL15523, 时间: 1年前)
+
+您好，感谢您分享阿尔法想法。我发现当使用 ts_percentage（一个很少使用的运算符）时，这种 alpha 创造力已经达到了阈值。然而，这种alpha材质使用了很多算子，这会让抢七天才处于劣势。是否可以减少一些不必要的操作符？希望您能给我更多建议
+
+---
+
+### 评论 #2 (作者: WP88606, 时间: 1年前)
+
+新手可以问一下简单优化是指什么？
+
+---
+
+### 评论 #3 (作者: YW93864, 时间: 1年前)
+
+[PL15523](/hc/en-us/profiles/13159798571671-PL15523)
+
+> *然而，这种alpha材质使用了很多算子*
+
+并非使用过多算子就不好，而是要确保使用了这些算子后，Alpha依然有经济意义。我们不能因为运算符过多而丢弃这些有价值的Alpha，我们的目的是submit有效的Alpha。这里操作的本质是对原始的数据序列进行筛选，使用ts_percentage是在构建摘选阈值，使用if_else是进行筛选，使用ts_mean是对筛选后的序列进行描述性统计，从而达到构建Alpha的目的。如果您想要减少操作符，您可以尝试只筛选一个数据序列的数据，比如只构建V_high，因为最后的V_high减去V_low做对比类似于多因子合成
+
+---
+
+### 评论 #4 (作者: YW93864, 时间: 1年前)
+
+[WP88606](/hc/en-us/profiles/27032592505751-WP88606)
+
+一般来说简单的优化是进行不同的中性化操作，例如在面板里选择Sector, Subindustry, Slow Factors等，您也可以考虑自定义中性化运算，比如group_neutralize(<alpha>, densify(Group))，只需在data里找到您想要的Group即可。
+
+更高阶的优化，则可以尝试在计算出ideal_amplitude_factor后，对其进行衍生的运算操作。如果您对线性回归熟悉，可以看到减法实际上是特殊的回归，因此您可以通过regression_neut对其取残差；或者使用时序运算符在ideal_amplitude_factor外部进行优化，比如ts_rank(ideal_amplitude_factor,20)等
+
+---
+
+### 评论 #5 (作者: XD81759, 时间: 1年前)
+
+【Alpha灵感】1.2 理想因子（换手率）
+
+前文已经实现了理想因子（振幅），那不由得要问：是否有其他的理想因子呢？答案是肯定的。开源证券《振幅因子的隐藏结构》提到，“振幅和换手率都是反映股票成交活跃程度的指标……高价换手率和低价换手率所蕴含的信息同样存在结构性差异，价格较高处换手率具有更强的负向选股能力。从回测结果上看，理想换手率因子的选股能力要优于原始换手率因子（图14），可以视为原始换手率因子的一个有效改进方案。”
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> 44
+> 换手幸因子的隐巅结构
+> 莪们知道。振幅和换手毫鄙是反映骰票成交活跃程度的指际。由上文结论可知
+> 不回价咨处的浆幅分布信息车奁结构悭屋异
+> 我们不祟思考:  换手辜因子是否也具
+> 有同样酌隐蕺结构?
+> 这卫采罔殷栗过去20日换手幸均值代夫犊于辜囡子
+> 戎们知遒。换于辜囤子同
+> 样具有一定哟负向选殷能力。过去换手辜较低岣骰票夫来收益表现绞好。基于理思
+> 派隔因子的构造枢架
+> 莪们尝试对换手辜囡子酌隐藏结构遴行垛索。考虑到两者酌
+> 构造框絮稆步g基本一致。
+> 只是将振幅替筷为换手辜
+> 这里我们不再赁述相关过程
+> 和步骤。最终戎们苤于换手幸囡子切割"到理~换于幸因子T,我们将切割比例入下
+> 岣理想换手辜因子记为 T(A )
+> 蛄沦上,高价换手辜和低价换手辜所蕴含的信息同样存在结构p差异,价格较高
+> 处换手蕈具有更强的负向逑骰能力
+> 从回澍结累上看。理想换手辜囡子的迷股能力
+> 要优于原始换手辜因子 (囝|4儿可以视为原黛换于辜因子的一种改遴方策
+
+
+在Brain平台的初步实现表达式如下（构造框架和步骤与上一篇“理想振幅因子”基本一致，只是将振幅替换为换手率）：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Step 1: 计算每日换于率
+> turnover
+> volume/sharesout;
+> # Step 2: 定义高收盘价和低收盘价的过滤条件
+> 25;
+> high_threshold
+> ts_percentage(close, d, percentage-0.3);
+> low_threshold
+> ts
+> percentage(close, d, percentage-0.7);
+> # Step 3: 筛选高收盘价和低收盘价对应的有效交易日
+> V_hieh
+> ts_mean(if_else(close
+> high_threshold,
+> turnover
+> NAN)
+> d);
+> V Iow
+> ts_mean(if_else(close
+> Iow_threshold
+> turnover, NAN )
+> d);
+> # Step 4: 计算理想因子
+> ideal
+> turnover_factor
+> V_hieh
+> V_low;
+> ideal
+> turnover_factor
+
+
+该Alpha在USA和GLB均产生了较强信号，经简单优化后即可submit。下图分别是该Alpha在USA和GLB的Performance。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> N Chart
+> 3,0UOK
+> 7017
+> 7015
+> 0L
+> 7017
+> 70Iq
+> 7019
+> 7020
+> 7077
+  
+> [!NOTE] [图片 OCR 识别内容]
+> IS Summary
+> Penod
+> AHsngle Data Set Alpha
+> Pyramid theme USAIDIIPrice Volume "1
+> Agre
+> Dutg
+> Snarpe
+> JIAMI
+> 1.69
+> 22.10%
+> 1.79
+> 24.,8696
+> 31.4696
+> 22.509600
+> CRat
+  
+> [!NOTE] [图片 OCR 识别内容]
+> N Chart
+> SOOO
+> 2013
+> CWTS
+  
+> [!NOTE] [图片 OCR 识别内容]
+> IS Summary
+> Penod
+> AHsngle Data Set Alpha
+> Pyramid theme USAIDIIPrice Volume "1
+> Agre
+> Dutg
+> Snarpe
+> JIAMI
+> 1.69
+> 22.10%
+> 1.79
+> 24.,8696
+> 31.4696
+> 22.509600
+> CRat
+
+
+（如果以上内容对您有帮助，请点点赞，谢谢）
+
+（本帖之后会在评论区继续更新。内容包括但不限于：Template-理想因子-实例&变式。感兴趣的小伙伴别忘了Follow喔~）
+
+---
+
+### 评论 #6 (作者: XD81759, 时间: 1年前)
+
+【Alpha灵感】1.3 理想因子（其他）：Template
+
+众所周知，因子的泛化能有效提高挖因子的效率。泛化也有很多种，如：①泛化到不同的region/universe，只要因子足够robust，这种泛化是比较平凡的；②泛化到不同的dataset/datafield，这种泛化是正是Template的主要功能；③通过修改Template，形成新的、不同的Template（变式），这是另一个维度的泛化，这种泛化对Template的延展性提出了更高的要求。本文重点讨论“理想因子”后两种泛化的情况。
+
+一个高度抽象的模板可能长这样：
+
+```
+# Step 1: 计算每日数据data = f_1({field});# Step 2: 定义过滤条件cond_1 = ccc1;cond_2 = ccc2;...cond_n = cccn;# Step 3: 计算有效交易日原始因子值d = ddd;V_1 = f_2(data, ts_operator(if_else(cond_1 data, NAN), d));V_2 = f_2(data, ts_operator(if_else(cond_2, data, NAN), d));...V_2 = f_2(data, ts_operator(if_else(cond_n, data, NAN), d));# Step 4: 计算理想因子ideal_factor = f_3(V_1, V_2, ..., V_n);# Step 5: 利用理想因子，构建最终因子f_4(ideal_factor)
+```
+
+其中，f_1是对datafield的预处理（可以不做），如ts_backfill，也可以是rank、group_normalize等；f_2是通过对data、ts_operator（及其他operator）的组合，实现的原始因子（详见以下示例）；f_3是理想因子的构建方式，包括但不限于V_1-V_2；f_4是将理想因子当作datafield后，按照其他因子构建方式，构建的最终因子（此处可用二阶、三阶、或其他Template）。
+
+为帮助大家理解，在此给出4个简单常用的模板：
+
+```
+模板一：# Step 1: 计算每日数据data = {datafield};# Step 2: 定义过滤条件d = 63;high_threshold = ts_percentage(close, d, percentage=0.5);low_threshold = ts_percentage(close, d, percentage=0.5);# Step 3: 计算有效交易日原始因子值V_high = data*ts_std_dev(if_else(close > high_threshold, data, NAN), d);V_low = data*ts_std_dev(if_else(close < low_threshold, data, NAN), d);# Step 4: 计算理想因子ideal_factor = V_high - V_low;# Step 5: 利用理想因子，构建最终因子-ideal_factor
+```
+
+```
+模板二：# Step 1: 计算每日数据data = {datafield};# Step 2: 定义过滤条件d = 63;high_threshold = ts_percentage(close, d, percentage=0.5);low_threshold = ts_percentage(close, d, percentage=0.5);# Step 3: 计算有效交易日原始因子值V_high = data*ts_std_dev(if_else(close > high_threshold, data, NAN), d);V_low = data*ts_std_dev(if_else(close < low_threshold, data, NAN), d);# Step 4: 计算理想因子ideal_factor = 2*V_high - V_low;# Step 5: 利用理想因子，构建最终因子-ideal_factor
+```
+
+```
+模板三：# Step 1: 计算每日数据data = {datafield};# Step 2: 定义过滤条件d = 5;high_threshold = ts_percentage(close, d, percentage=0.5);low_threshold = ts_percentage(close, d, percentage=0.5);# Step 3: 计算有效交易日原始因子值V_high = ts_mean(if_else(close > high_threshold, data, NAN), d);V_low = ts_mean(if_else(close > high_threshold, data, NAN), d);# Step 4: 计算理想因子ideal_factor = V_high - V_low;# Step 5: 利用理想因子，构建最终因子-ideal_factor
+```
+
+```
+模板四：# Step 1: 计算每日数据data = {datafield};# Step 2: 定义过滤条件d = 5;high_threshold = ts_percentage(close, d, percentage=0.5);low_threshold = ts_percentage(close, d, percentage=0.5);# Step 3: 计算有效交易日原始因子值V_high = ts_mean(if_else(close > high_threshold, data, NAN), d);V_low = ts_mean(if_else(close > high_threshold, data, NAN), d);# Step 4: 计算理想因子ideal_factor = 5*V_high - V_low;# Step 5: 利用理想因子，构建最终因子-ideal_factor
+```
+
+（如果以上内容对您有帮助，请点点赞，谢谢）
+
+（本帖之后会在评论区继续更新。接下来几篇是在ASI-MINVOL1M-D1不同dataset上的泛化实例，有助于理解以上Template泛化方式、效果及后续调优方法等。感兴趣的小伙伴别忘了Follow喔~）
+
+---
+
+### 评论 #7 (作者: LH44620, 时间: 1年前)
+
+大佬，没有ts_percentage（）操作符，有没有什么替代的办法😍
+
+---
+
+### 评论 #8 (作者: 顾问 SD17531 (Rank 15), 时间: 1年前)
+
+ts_percentage这个操作符新人没有权限,有没有其他类似操作符可以实现?谢谢
+
+```
+high_threshold = ts_percentage(close, d, percentage=0.5);low_threshold = ts_percentage(close, d, percentage=0.5);
+```
+
+---
+
+### 评论 #9 (作者: LH44620, 时间: 1年前)
+
+大佬，没有ts_percentage（）操作符，有没有什么替代的办法
+
+---
+
+### 评论 #10 (作者: CZ10093, 时间: 1年前)
+
+想请教一下您是使用了什么样的simulation setting。
+
+下图是从您在研究小组中的ppt中的截图，可以看到sharpe和fitness都达标，也挺高。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> mdl26_rank (大幅降prod,
+> 且表现明显提升)
+> Sttlngs
+> ASIIDTIMINVOLTN
+> Sll
+> IJMIINI
+> NINIIUI
+> UtRun Sun 01/19/2025。90
+> Corrlaton
+> Streak  3 day
+> 0.1849
+> -0.0781
+> Step ]; 计其血日9抿
+> Vata
+> ts_backt71 (d176_rank,63):
+> Prod
+> VAMIUN
+> WnmUI
+> Wun Sun 01/19/202,905
+> Corrolton
+> Step 7; 定 (讨,卡件
+> 0.2837
+> -0.5882
+> 0;
+> high_threshold
+> 15_porcentaBe(Close,d, percentage 0.9);
+> low threshold
+> LspercentaRe(close, 4, Dercetape 0,1);
+> StOP
+> 篙逑有效爻吕日
+> IS Testing Status
+> hiph
+> Uata
+> St4 Uov
+> (ifelse(close
+> hiph threshold, data
+> II); 4);
+> Io
+> data Lsstd Uey( CIse(close
+> Jow_threshld, Jata, INI), 4);
+> Step 4: 计自理w因1
+> PASS
+> Jdeal  Tactor
+> 10 VhiEh
+> Shrpe 01291
+> above CUIOITOI 1.58
+> Broup Iormlize(ideal_factor, Country)
+> FIness01181
+> uboeCoIO
+> CUIOI O
+> Turnovcr 0117.934
+> below CUtoltol 704
+> WeRhCA wel dstbuted Over Instrument
+> Sub UnNerse
+> O138
+> aboe CUIOIO10.68
+> Iuddler
+> 0121
+> nbove cutoltor 2 02Ior Udder yeor 2 7/15/2022.7/16/2020
+> These Pyramd themes mulch mth Ihe lollowlng muluplers ASIDIIModel
+> 2 ASIDIIPrCC Volume
+> The Inl pramd theme mulripler52
+> Conth Nphinanwb
+> PENOING
+> ANI NOhJ
+> OpenJphudVI
+> 
+> S
+> 0U
+> Chck SuIIsslon
+> SUDI Alpha
+> no(b
+> U
+> Lo;
+> Shrpe
+> ShIDC
+
+
+而下图是我想复现您的alpha。 **可以看到除了nan的大小写问题和没有comment，和您的代码一模一样** ，但是sharpe和fitness非常低，根本不达标。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Pnl
+> Risk Neutralized Pnl
+> Settings
+> ASI/D1/MINVOLIM
+> Conyert to Multi-Simulation
+> Streak: 93 day
+> data
+> ts_backfill (md126_rank,
+> 631;
+> IS Summary
+> Period
+> 63;
+> high_threshold
+> percentage(CLOSe, d
+> percentage=0. 91;
+> LOW_threshold
+> tS_percentage lclose
+> percentage=0.1);
+> Aggregate Data
+> Sharoe
+> TITMIIP |
+> FITIPCC
+> RPTITIC
+> TIIUTIIT
+> Wareln
+> high
+> Jata
+> ts_std_dev ( iT_else(Close
+> high_threshold ,
+> data,
+> nan/
+> 41;
+> 0.49
+> 15.81%
+> 0.25
+> 3.96%
+> 17.4796
+> 5.01%0。
+> lOw
+> Jata
+> ts_sto_dev (
+> if_else ( CLOSe
+> low_threshold,
+> Jata;
+> nan
+> d;
+> ideal_fator
+> 10+V_highV_
+> 9roup_normalize ( idea
+> fator
+> country
+> Sharpe
+> Turnover
+> Ftness
+> Returns
+> Drawdown
+> Margin
+> Long Count
+> Short Count
+> 2012
+> 1.35
+> 45%
+> 0.95
+> 8.12%
+> 9095
+> 87
+> 219
+> 530
+> 2013
+> ~0.11
+> 15.47%
+> 0.03
+> 0.93%
+> 12.299
+> 13。
+> 212
+> 507
+> 2014
+> 2.63
+> 15.41%
+> 2.96
+> 19.55%
+> 3.399
+> 25.3395
+> 707
+> 2015
+> 1.24
+> 78%
+> 11.15%
+> 17.4795
+> 14.13
+> 250
+> 715
+> 2016
+> 0.29
+> 15.99%
+> 0.13
+> 3.05%
+> 5.195
+> .82
+> 738
+> 2017
+> 0.29
+> 5.62%
+> 0.10
+> 1.71%
+> 3095
+> 19。
+> 673
+> 2018
+> 14.61%
+> 0.68
+> 7.46%
+> 5195
+> 10.215
+> 312
+> 874
+> 2019
+> 0.5
+> 98%
+> 0.49
+> 52%
+> 3.979
+> 6.91
+> 256
+> 2020
+> 1.72
+> 17.49%
+> 1.55
+> 15.19%
+> 329
+> 18.52a
+> 237
+> 2021
+> 0.33
+> 15.36%
+> 0.16
+> 2.62%
+> 7.269
+> 3.41
+> 323
+> 892
+> 2022
+> 0.94
+> 14.71%
+> 0.55
+> 7.20%
+> 4.049
+> 80s
+> 336
+> 915
+> Risk neutralized
+> Aggregate Data
+> SarpC
+> LULRONC |
+> FIICS
+> CUIO
+> Drawgon
+> MareIn
+> 0.61
+> 15.81 %
+> 0.25
+> 2.58%
+> 13.53%
+> 3.26%00
+> LON;
+> Year
+
+
+当然这个差异有可能是由于simulation setting造成的，我的simulation setting使用的如下settings。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Simulation Settings
+> Instrument Type
+> Region
+> Universe
+> Language
+> Decay
+> Delay
+> Truncation
+> Neutralization
+> Pasteurization
+> NaN Handling
+> Unit Handling
+> Equit
+> MINOLIN
+> Fast Zxpression
+> 0.05
+> Industn
+> Verity
+
+
+**然后我尝试了多种我能够想到的simulation settings，修改了neutralization、decay和truncate，但是我仿真得到的sharpe & fitness从没有超过1 ！！**
+
+我很好奇您采用的是一个什么样的simulation setting，能够将在表达式相同的情况下，将sharpe & fitness提升那么多。希望得到您的回答，非常感谢！
+
+---
+
+### 评论 #11 (作者: XD81759, 时间: 1年前)
+
+有一些朋友可能因为操作符权限问题，无法使用ts_percentage，在此本人提供一种替代方法：
+
+```
+ # Step 1: 计算每日数据data = ts_backfill(mdl26_rank,63);# Step 2: 定义过滤条件d = 63;cond_high = (ts_rank(close, d) > 0.9);cond_low = (ts_rank(close, d) < 0.1);# Step 3: 筛选有效交易日V_high = data*ts_std_dev(if_else(cond_high, data, NAN), d);V_low = data*ts_std_dev(if_else(cond_low, data, NAN), d);# Step 4: 计算理想因子ideal_factor = 10*V_high - V_low;group_normalize(ideal_factor,country)
+```
+
+效果如下：
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> NWJUI
+> plom ImrFmmco
+> crt;
+> 幼e 
+> SImulal
+> Quphs
+> [Lrn
+> Tns
+> Compoutoroll
+> TOITIIURI
+> Rolora TLC
+> M
+> HSSUII TC
+> o
+> ASIIDIIINUOUT
+> NTe 
+> llm
+> Chart
+> IRTAI
+> 计卫#曰[v
+> L LTTILalJ
+> 疋(让忐*+
+> Cond hlph
+> TankcLCn
+> 0-91
+> LIILII
+> T5 TIeII
+> PI
+> 1』s2县0
+> devlifclyelcrd_hipt
+> TITI
+> +NT
+> TI。 u
+> 升事拜;困干
+> TPATI TIT
+> TI Iol
+> U1
+> RTOUp nrrlTe 'Iweul uctcr Com
+> Roe|Nr
+> Crti AThw17n nwtot
+> Lmmol
+> CNCL 5ubI5on
+> SUSII AUla
+> IJL
+  
+> [!NOTE] [图片 OCR 识别内容]
+> IS Summary
+> Period
+> IS
+> OS
+> Aggregate Data
+> Sharpe
+> Turnover
+> Ftnoss
+> Returns
+> Drawdown
+> Margin
+> 2.57
+> 17.189
+> 2.17
+> 12.209
+> 4.279
+> 14.219600
+
+
+大家在使用模板的时候，可以充分发挥主观能动性，修修改改，找到最适合自己的！
+
+---
+
+### 评论 #12 (作者: XD81759, 时间: 1年前)
+
+感谢 [CZ10093](/hc/en-us/profiles/26965592415639-CZ10093) 的提问
+
+关于设置问题，第一次跑的时候我一般设置decay=0，中性化=country。
+
+---
+
+### 评论 #13 (作者: YK42677, 时间: 1年前)
+
+其实如果没有上面的这些operator，也可以用ts_mean来算出close的均值，然后用close对均值乘以一个系数去做大小比较，也能跑出来，我的理解是排序或者百分比函数选取出来的数据并不一定要是一个固定的比例，用我的方法去操作的话，反而可能能够获取数据的多样性，从而可能出现更加好的alpha。
+
+---
+

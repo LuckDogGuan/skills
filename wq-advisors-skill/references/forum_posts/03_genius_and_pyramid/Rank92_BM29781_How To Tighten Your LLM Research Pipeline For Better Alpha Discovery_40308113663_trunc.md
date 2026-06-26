@@ -1,0 +1,207 @@
+# How To Tighten Your LLM Research Pipeline For Better Alpha Discovery
+
+- **链接**: https://support.worldquantbrain.comHow To Tighten Your LLM Research Pipeline For Better Alpha Discovery_40308113663767.md
+- **作者**: 顾问 BM29781 (Rank 92)
+- **发布时间/热度**: 1个月前, 得票: 25
+
+## 帖子正文
+
+A lot of people are already using NotebookLLM + ChatGPT workflows.
+
+But most pipelines still leak quality at multiple stages.
+
+The issue usually isn’t model intelligence.
+
+It’s pipeline design.
+
+Here are some things that significantly improved my outputs and reduced generic signal generation:
+
+## 1. Stop Asking For “Alpha Ideas”
+
+This is the fastest way to get crowded outputs.
+
+Bad Prompt:
+
+> “Generate quant signals.”
+
+You’ll get:
+
+- RSI variants
+- simple momentum
+- basic mean reversion
+- generic volatility filters
+
+Instead, constrain the search space aggressively.
+
+Better Prompt:
+
+> “Generate low-correlation liquidity-sensitive signals robust during volatility expansion using only price-volume interactions.”
+
+The tighter the constraints, the more interesting the outputs become.
+
+## 2. Separate The Pipeline Into Specialized Stages
+
+Most people use one giant prompt.
+
+That creates noisy reasoning.
+
+Better approach:
+
+Stage 1 → Research extraction
+Stage 2 → Mechanism identification
+Stage 3 → Feature expansion
+Stage 4 → Signal implementation
+Stage 5 → Risk overlay
+Stage 6 → Correlation filtering
+
+LLMs perform better when each stage has:
+
+- one objective
+- one context
+- one output format
+
+## 3. Force Structural Thinking
+
+Instead of asking for indicators, ask for mechanisms.
+
+Weak:
+
+> “Generate momentum signals.”
+
+Better:
+
+> “Identify behavioral or liquidity mechanisms that could explain delayed price continuation.”
+
+This shifts outputs from:
+indicator-thinking → structural-thinking
+
+That’s where more differentiated ideas start appearing.
+
+## 4. Add Negative Constraints
+
+This improved my outputs a LOT.
+
+Explicitly tell the model what to avoid.
+
+Example:
+
+> “Avoid RSI-style oscillators, simple moving-average crossovers, and standard volatility breakouts.”
+
+This prevents the model from collapsing into highly repeated public factors.
+
+## 5. Use Cross-Paper Tension Analysis
+
+Most people ask:
+
+> “Summarize these papers.”
+
+Better:
+
+> “Identify where these papers disagree and explain why.”
+
+That’s extremely useful.
+
+Because unique signals often emerge from:
+
+- conflicting assumptions
+- different regimes
+- contradictory factor behavior
+
+Not from consensus.
+
+## 6. Build A “Failure Detection” Prompt Layer
+
+This is massively underrated.
+
+After generating signals, immediately ask:
+
+> “Explain why this signal would fail in live trading.”
+
+or
+
+> “Under what market regime does this alpha collapse?”
+
+This helps detect:
+
+- hidden beta exposure
+- liquidity fragility
+- volatility dependence
+- crowding risk
+- regime instability
+
+The quality jump here is huge.
+
+## 7. Ask For Orthogonal Variants
+
+Most generated signals are highly correlated clones.
+
+Try prompts like:
+
+> “Generate variants targeting the same mechanism using entirely different feature families.”
+
+This helps uncover:
+
+- lower-correlation implementations
+- more robust ensembles
+- diversified alpha clusters
+
+## 8. Force The Model To Rank Its Own Outputs
+
+Instead of:
+
+> “Generate 20 signals.”
+
+Use:
+
+> “Generate 20 signals and rank them by uniqueness, robustness, and crowding risk.”
+
+This creates another filtering layer automatically.
+
+## 9. Use Iterative Prompt Chaining
+
+The biggest mistake is stopping after one generation.
+
+The real power comes from recursive refinement.
+
+Example workflow:
+
+Generation → Critique → Refine → Stress Test → Simplify → Recombine
+
+That loop produces dramatically better outputs than one-shot prompting.
+
+## 10. Focus More On Filtering Than Generation
+
+This is probably the biggest mindset shift.
+
+LLMs make idea generation cheap.
+
+So the edge increasingly comes from:
+
+- rejecting weak ideas quickly
+- identifying hidden overlap
+- understanding regime behavior
+- spotting implementation fragility
+
+In other words:
+
+Future quant workflows may look less like:
+“Who can generate ideas?”
+
+and more like:
+“Who can filter noise best?”
+
+**Question:**
+
+Do you think future alpha research will become dominated by:
+
+1. Prompt engineering
+2. Data advantages
+3. Evaluation/filtering systems
+4. Human intuition/judgment
+
+?
+
+---
+
+## 讨论与评论 (0)
+

@@ -1,0 +1,227 @@
+# PPAC比赛score的疑问
+
+- **链接**: https://support.worldquantbrain.com[Commented] PPAC比赛score的疑问_31333961556247.md
+- **作者**: 顾问 QP72475 (Rank 84)
+- **发布时间/热度**: 1年前, 得票: 54
+
+## 帖子正文
+
+我每次提交PPAC因子的时候查看的score都是增加的，但更新后IS是降下来了，导致排名也降下来了，大家遇到过这个问题吗？那提交PPAC因子的时候如果不看score，那怎么确保提交上去的因子是对比赛有正向作用的呢。大家平常在PPAC比赛中，是怎么选择因子提交的？
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Performance Comparison
+> Delay-1 Score
+> 3eTre
+> SubTTsian
+> SIhmi-siun
+> Chanes
+> Run: Fri; 04/11/2025
+> 5--9 AN
+> 9,875
+> 10,065
+> 190
+> Aggregate Data
+> Saro2
+> LUrnOer
+> FItnEss
+> RetUTns
+> Uray'doII
+> Warain
+> 3.90 .003
+> 14.15 %
+> , 01
+> 3.78 .001
+> 13.28 % ,-016
+> 2.84 % ,-0.18
+> 18.78900
+> 3
+> IS Performance After Submission (Power Pool Alphas Competition 2025 alphas)
+> -hiner
+> Perormance
+> 373
+> ShT T[
+> Power D03
+> Jlphas Competition 2025
+> Iphas. Submittins this
+> Will not ETTECTthe
+> hin a
+> Derformancs
+> OTyOJT
+> TTher
+> 3I0h35
+> Year
+> Sharpe
+> Turnover
+> Ftnoss
+> Returns
+> Drawdown
+> Marqin
+> 2013
+> 02
+> 001
+> 1-.341
+> 0.01
+> 0.35
+> -0.02
+> 3.31
+> ~.16
+> 1.191
+> 0.01
+> 4::
+> ~0.22
+> +
+> 0.10
+> 13.751:
+> 0.03
+> 2.30
+> 0.06
+> 1.141
+> ~0.05
+> 1.501
+> 0.0
+> 1.3-:
+> 0.09
+> 2015
+> 352
+> 0.02
+> 13.51 {:
+> 0.02
+> .5
+> 0.30
+> .:
+> 1
+> 1.47 1
+> 0.05
+> 10.447
+> 0.18
+> 2015
+> 5.73
+> 0.10
+> 13.50*
+> 0.02
+> 5.14
+> 0.07
+> 10.35!1
+> 0.03
+> 1.531
+> 0.01
+> 15.071:
+> 0.14
+> 2017
+> 一2
+> 0.02
+> 13.551:
+> 0.01
+> 3.014
+> -0.02
+> 7.431
+> 0.17
+> 1.21
+> 0.01
+> 1.53
+> 0.25
+> 2013
+> 一24
+> 0.03
+> 1-.25 1:
+> 0.02
+> 3.95
+> -.11
+> 12.50 !1
+> 0.50
+> 1.23
+> 0.05
+> 1.5--:
+> 0.67
+> 2013
+> 0.00
+> 13.31 :
+> 0.02
+> 3.17
+> -0.04
+> 3.31 !1
+> ~0.23
+> 1.153
+> 0.03
+> 13.3::
+> 0.31
+> 2027
+> 一2
+> 0.03
+> 1.25 ::
+> 0.04
+> 一一
+> 0.13
+> 17.551
+> 0
+> 23 :
+> 0.09
+> 22.36::
+> 0.3
+> 121
+> 513
+> 0.07
+> 1-.35#
+> 0.09
+> 7.34
+> 0.09
+> 29.35!1
+> 0.23
+> 2.341
+> 0.18
+> 40.175
+> 0.10
+> 2022
+> 一3
+> 0.04
+> 1-.09
+> 0.07
+> 6.95
+> 0.05
+> 7.521
+> ~0.19
+> 2.213
+> 0.01
+> 3.433:
+> 0.07
+> 2023
+> 0.03
+> 12.331:
+> 0.07
+> 2.51
+> 0.01
+> 3.57 1
+> 0.10
+> 1.351
+> 0.02
+> 14.7::
+> 0.26
+> Pnl
+> 3Iohs
+
+
+---
+
+## 讨论与评论 (2)
+
+### 评论 #1 (作者: 顾问 YX23928 (Rank 8), 时间: 1年前)
+
+分数是根据sharpe和fitness来判断的，提交的时候可以看看Performance Comparison，如果对自己的组合有增益，是可以提交的
+
+---
+
+### 评论 #2 (作者: LL87164, 时间: 1年前)
+
+[https://support.worldquantbrain.com/hc/en-us/articles/30787348743447-Do-I-need-to-run-merged-performance-comparison-feature-before-submitting-an-Alpha-in-the-competition](https://support.worldquantbrain.com/hc/en-us/articles/30787348743447-Do-I-need-to-run-merged-performance-comparison-feature-before-submitting-an-Alpha-in-the-competition)
+
+[https://support.worldquantbrain.com/hc/en-us/articles/30788092457623-What-is-the-scoring-criteria-for-Power-Pool-Alpha-Competition](https://support.worldquantbrain.com/hc/en-us/articles/30788092457623-What-is-the-scoring-criteria-for-Power-Pool-Alpha-Competition)
+
+Score不是基于Merged PnL来计算的：“ *The scoring in the Power Pool competition is based on the Sharpe of a smart combination of your selected power pool eligible Alphas (based on returns and variability of the Alphas). Scoring is not based on merged performance.* ”
+
+Summary: It is the sum of Before-cost Information Ratio(IR) and After-cost Information Ratio. Both metrics are normalized and adjusted for alpha count, across In-sample and Out-sample.
+
+个人理解是：IS可以从回测结果看alpha表现的稳健和波动。OS靠感觉和信念。
+
+---
+

@@ -1,0 +1,362 @@
+# 使用VSCODE中的通义灵码自建免费MCP
+
+- **链接**: https://support.worldquantbrain.com[Commented] 使用VSCODE中的通义灵码自建免费MCP_36617019073943.md
+- **作者**: WY85693
+- **发布时间/热度**: 7个月前, 得票: 12
+
+## 帖子正文
+
+论坛里面大家讨论的都很多，但是还是会踩各种各样的坑。这次我来手把手教大家怎么在VSCODE中利用阿里的通义灵码建一个免费的MCP。
+
+1. 首先下载安装VSCODE；
+2. 在插件市场安装通义灵码； 
+> [!NOTE] [图片 OCR 识别内容]
+> Lingma
+> Alibaba Cloud AI Coding Assistant
+> V2.5.17
+> Alibaba-Cloud
+> 1,953.396
+> 太大大太太(132]
+> Type Less; Code More
+> :用
+> 即载
+> 功能
+> 更改8志
+
+3. 安装大佬们编写好的mcp库。pip install cnhkmcp 。此时需要你明确清楚的知道你的cnhkmcp安装的位置，后面需要导入脚本。如果不知道，可以直接在通义灵码当中询问，【我安装的cnhkmcp的位置在哪？】
+4. 打开通义灵码的个人设置（要登陆）。 
+> [!NOTE] [图片 OCR 识别内容]
+> @ R
+> 智能会话
+> 个人设置
+> 个人设置
+> 『邀出
+> 基础信息
+> 9人
+> 账号
+> 版本
+> 个人版
+> 改进计划
+> 改进计划
+> 记忆管理
+> 1
+> 记忆是自动从使用通!灵码的过程中不断积累的
+> 可以帮助通义灵码更好坳和'互
+> 它贯穿于你和通义灵码的对话中
+> 并且随着时间旒逝。也能够让通义灵码越来越
+> 懂你。
+> 条记忆
+> MCP 眼务
+> MCP 是通V灵码扩展新工具的
+> 种方式。可以查看帮助文档
+> 解更多。
+> 服务己连接
+> 规则
+> 规则可以帮助通义灵码更了解当前工程中的规则。
+> 查看帮助文档获取更多使用示例
+> 条规则
+
+5. 在右上角点击新增MCP-配置文件添加 。这里coomand是写你当前执行python的运行位置。(版本要在3.11以上)。args是你刚刚安装cnhkmcp包位置中的platform_functions.py。description是这个mcp的一个简单描述，用于分辨，怎么写都行。
+   "WorldQuant BRAIN Platform Mcp Server - Comprehensive trading platform integration with simulation managementalpha operations, and authentication. Credentials are stored inuser config.json in the same directory. Provides tools for creatingsimulations, checking status, managing alphas, and accessing platform features."
+   
+> [!NOTE] [图片 OCR 识别内容]
+> Lib
+> site-packages
+> cnhkmcp
+> untracked
+> 在 untracked 中搜索
+> @
+> N #序 
+> 三  查
+> 详绍岸
+> 二称
+> 修改日期
+> 奖型
+> 天小
+> Pycache
+> 2025/11/2617:23
+> 文件奕
+> APP
+> 2025/11/2616:58
+> 文件奕
+> mcp文件论坛版2_如果原版启动不了浏览器就试这个
+> 2025/11/2616:58
+> 文件奕
+> aryiv_apipy
+> 2025/11/2616:53
+> Pthon 源文件
+> arXiv_API_Toon
+> Manualmd
+> 2025/11/2616:58
+> Markdown 源文件
+> 14K3
+> forum_functions:py
+> 2025/11/2616:53
+> Pthon 源文件
+> 42<3
+> platform_functions;py
+> 2025/11/2617:28
+> Pthon 源文件
+> 119K3
+> sample_mCP_configjson
+> 2025/11/2616:58
+> JSON 源文件
+> 2C3
+> User_configjson
+> 这今so则是仵需要输2些骚鹎的位訾三
+> 源文件
+> 配置前运行我_安$必要农赖包 py
+> 2025/11/2616:58
+> Pthon 源文件
+> 示例参考文栏 BRAINAlpha_Test_Requirements_
+> Tipsimd
+> 2025/11/2616:58
+> Markdown 源文件
+> 17 KB
+> 示例工怍流 Alpha_explaination_workflow.md
+> 2025/11/2616:53
+> Markdown 源文件
+> 5 K3
+> 示例工怍流 BRAIN_
+> Tips_Datafield_Exploration_Guidemd
+> 2025/11/2616:58
+> Markdown 源文件
+> 示例工怍流 BRAIN_Alpha_Improvement_Workflow.md
+> 2025/11/2616:53
+> Markdown 源文件
+> 5 K3
+> 示例工怅流 daily_report_workflow.md
+> 2025/11/2616:58
+> Markdown 源文件
+> 10K3
+> 示例工作流_Dataset_Exploration_Expert_Manualmd
+> 2025/11/2616:58
+> Markdown 源文件
+> 24<3
+> snd
+  
+> [!NOTE] [图片 OCR 识别内容]
+> Users
+> lingma
+> lingma_mcpjson
+> mcpServers
+> worldquant-brain-platform"
+> Command"
+> "C: /Users/
+> AppData/ Local /Programs /Python/Python3l2/python.exe
+> args
+> C: /Users /
+> {AppData / Local /Programs /Python /Python312/Lib/site-packages / cnhkmcp /untracked /platform_functions
+> description"
+> "WorldQuant BRAIN Platform Mcp Server
+> Comprehensive trading platform integration with simulation
+> managementalpha operations,
+> and authentication
+> Credentials
+> are
+> stored
+> inuser ConfiB.json
+> in the
+> Same
+> directory .
+> Provides
+> tools
+> for creatingsimulations,
+> checking status,
+> managing alphas,
+> accessing platform features
+> Py"
+> and
+
+6. 配置好了之后，在相同位置的user_config.json中，写入你的brain平台的账号密码。 
+> [!NOTE] [图片 OCR 识别内容]
+> credentials"
+> email"
+> password"
+> apisettings
+> base_Url"
+> htts:Lapiwopldquantbrain
+> COI
+> timeout"
+> 30,
+> retry_attempts
+> forum_settings":
+> 'base
+> Url 
+> https : //support .worldquantbrain
+> COI
+> 'headless
+> true
+> timeout"
+> 5imulation_defaults"
+> type
+> REGULAR"
+> instrument_type'
+> EQUITY"
+> region"
+> "USA"
+> universe'
+> T0P3080"
+> delay"
+> decay"
+> neutralization"
+> "NONE
+> truncation"
+> test_period"
+> POYBM"
+> unit
+> handling"
+> NONE
+> nan
+> handling
+> NONE
+> "language'
+> FASTEXPR"
+> Visualization"
+> true
+
+7. 所有内容配置好了之后，有个测试，点击测试，在所有步骤正确的情况下，就可以查看大佬们写的mcp工具了。
+8. 最后希望大家都能装好自己的MCP。:D 
+> [!NOTE] [图片 OCR 识别内容]
+> C:(Users/l
+> 'AppDatalLocallPrograms/Python(Python31z/python
+> exe
+> 工具(40]
+> authenticate
+> Authenticate with WorldQua。。
+> Value_factor_trendscore
+> Compute and retum the dwversit
+> manage_config
+> Manage configuration settin。。
+> Create_slmulation
+> Create
+> DeW simulation on
+> get_alpha_details
+> Get detailed infommation ab.
+> get_datasets
+> Get available datasets Tor re。
+> get_datafields
+> Get available data felds for
+> get_alpha_pnl
+> Get PnL (Proft and LOss] dat
+> getuser_alphas
+> Get Users alphas with adyan。
+> submit_alpha
+> Submit an alpha for product。
+> getevents
+> Get available events and CO。。
+> get_leaderboard
+> Get leaderboard data。Args;
+> SaVe_slmulation_data
+> SaVe slmulatlon data to
+> getoperators
+> Get available operators for
+> run_selection
+> Run
+> selection queryto flt。。
+> get_user_profile
+> Get user profile information。。。
+> get_documentations
+> Get available documentatiO.
+> get_messages
+> Get messages Torthe current Us
+> getglossan_terms
+> Get glossanyterms from WO..
+> search_forum_posts
+> Search forum posts on Worl。
+> read_forum_post
+> Get
+> specifc forum post by。。
+> get_alpha_yearty_stats
+> Get yearly statistics for an alpha。
+> check_correlation
+> Check alpha correlation against
+> get_submission_check
+> Comprehensive pre-submission
+> set_alpha_properties
+> Update alpha propertles (name。
+> get_record_sets
+> List available record sets Toran
+> get_record_set_data
+> Get data from
+> specific record
+> get_user_activities
+> Get User activity diversit data。
+> get_Pyramid_multipliers
+> Get Curent
+> multipliers
+> Pyramid
+
+
+---
+
+## 讨论与评论 (9)
+
+### 评论 #1 (作者: 顾问 MS51256 (Rank 28), 时间: 6个月前)
+
+**===============================顾问 MS51256 (Rank 28)的评论===============================**
+
+**感谢大佬的分享，mcp不断在不同的平台不同的ai中应用，在可预见的未来国区的因子质量将会被ai显著提升，期待每一位顾问的分享，期待国区再创佳绩。
+
+================================Do your best ================================**
+
+---
+
+### 评论 #2 (作者: CC52425, 时间: 6个月前)
+
+这个是需要走梯子吗， 按照步骤操作后，提示
+
+failed to initialize MCP client for worldquant-brain-platform: transport error: context deadline exceeded
+
+使用命令行执行了下 python  /xxxx/platform_functions.py    xxxx为个人路径， 会一些提示报错，根据报错改进吧， 我这边是因为缺少模块，所以pip 安装了模块了正常可以使用了
+
+---
+
+### 评论 #3 (作者: CY76111, 时间: 6个月前)
+
+大佬，怎么用呢？
+
+---
+
+### 评论 #4 (作者: WY85693, 时间: 6个月前)
+
+[CC52425](/hc/en-us/profiles/33497330899735-CC52425)  不需要走梯子，这个看起来主要是因为你的网络环境问题。建议禁用或检查防火墙，更新vscode和里面的插件
+
+---
+
+### 评论 #5 (作者: TT21691, 时间: 6个月前)
+
+对于免费的来说，还是不错的，在实际的工作流中，可以先使用免费的测试，效果不错再使用一些付费的模型。
+
+---
+
+### 评论 #6 (作者: AH18340, 时间: 6个月前)
+
+通义灵码用了感觉效果不是很好，不懂其他大佬的如何
+
+=============================================================================
+
+The best time to plant a tree is 20 years ago. The second-best time is now.
+
+=============================================================================
+
+---
+
+### 评论 #7 (作者: FF65210, 时间: 6个月前)
+
+**ai经常显示调用mcp工具错误是什么原因，前两天刚装下来，还不太会用，能出一份通义mcp使用攻略吗**
+
+---
+
+### 评论 #8 (作者: CC21336, 时间: 6个月前)
+
+一直用的DeepSeek，每天耗费2块，准备试一试这个免费版本
+
+---
+
+### 评论 #9 (作者: HY20507, 时间: 4个月前)
+
+条理很清晰，所有的mcp安装差不多都是这个路数，可以当作一个范本，向大佬致敬
+
+---
+

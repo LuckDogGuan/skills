@@ -1,0 +1,323 @@
+# Vscode自动提示operator代码优化
+
+- **链接**: https://support.worldquantbrain.com[Commented] Vscode自动提示operator代码优化_33274404140439.md
+- **作者**: 顾问 WL27618 (Rank 97)
+- **发布时间/热度**: 1年前, 得票: 72
+
+## 帖子正文
+
+有时候一边写代码一边查opeartor网页会非常打断思路, 我们可以基于自己的 JSON 文档开发一个轻量级的 VSCode 插件，提供 **悬停文档** 和 **自动补全** 功能，用于自定义的 **数据字段** 和 **运算符** ，。
+
+ 
+> [!NOTE] [图片 OCR 识别内容]
+> field-operator-hints
+> Welcome
+> 1U
+> test py
+> t
+> ts_arg
+> Iax
+> ts_arg_max(x,
+> ts_arg_min
+> ts_av_diff
+> Time Series
+> ts_backfill
+> ts
+> Returns the relative index of the max Value in the tme
+> ts
+> Count_nans
+> series for the past d days
+> If the current day has the max
+> ts
+> covariance
+> Value for the past d days, i returns 0.If previous day
+> ts_decay
+> linear
+> has the max Value for the past d days; j returns
+> ts_delay
+> ts_delta
+> ts_ir
+> ts
+> kurtosis
+> test py
+> LCOFr
+ 
+
+大家可以在vscode搜我编译好的插件试一下.
+
+ 
+> [!NOTE] [图片 OCR 识别内容]
+> EXTENSIONS: MARKETPLACE
+> brain_s
+> brain_snippet
+> 2ms
+> Worldquant brain platform datafiel..
+> Roshameow
+> Restart Extensions
+> {
+> 氐
+ 
+加载自己的opeartors. 像这样, 在这里添加自己的json路径.
+
+ 
+> [!NOTE] [图片 OCR 识别内容]
+> field-operator-hints
+> EXTENSIONS: MARKETPLACE
+> Welcome
+> package.json
+> 田 Extension: brain_snippet
+> test:py
+> Settings
+> 义
+> brain_
+> Jext:Roshameow field-operator-hints
+> Setting Found
+> brain_snippet
+> 2ms
+> User
+> Workspace
+> Backup and Sync Settings
+> Worldquant brain platform datafiel..
+> Roshameow
+> Extensions (1)
+> 品
+> Field Operator Hints: Custom Operator JSON Path
+> Path to a custom operator JSON file (absolute or workspace-relative path)
+> 唱
+> 囚
+
+
+---
+
+## 讨论与评论 (10)
+
+### 评论 #1 (作者: DS48533, 时间: 1年前)
+
+不错，用上了，嘿嘿～
+
+---
+
+### 评论 #2 (作者: 顾问 JR23144 (Rank 6), 时间: 1年前)
+
+大佬厉害呀，这个vs code 插件很好用，以后写代码，就不用去翻网页，直接在vs code 中就可以写了
+
+===================================== VF1.0 ========================================
+
+---
+
+### 评论 #3 (作者: worldquant brain赛博游戏王, 时间: 1年前)
+
+很好用的插件，已经用上了
+
+省去了一边写 模版一边翻learn的烦恼，点赞！！！
+
+========================================================================================================================================================================
+
+---
+
+### 评论 #4 (作者: 顾问 WL27618 (Rank 97), 时间: 1年前)
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> async def generate_parms
+> Session
+> region
+> USA
+> universe
+> T
+> delay
+> 11'
+> 甲 TOP1000
+> universe: USA,
+> GLB
+> simulation_da 甘
+> T0P1200
+> type
+> TOP16O0
+> settings
+> TOP2O0
+> instl
+> TOPZQQgU
+> regi
+> T0P2500
+> univ
+> T0P3000
+> dela
+> TOP400
+> deca
+> TOP5OO
+> neut
+> TOP6OO
+> trun 舀
+> TOP8OO
+> past
+> TOPDIV3000
+ 
+ 
+> [!NOTE] [图片 OCR 识别内容]
+> C COy
+> U L0〉
+> decay
+> 6,
+> neutralization
+> N
+> 'truncation
+> 0.01,
+> MARKET
+> neutralization:
+> USA, GLB, EUR,
+> ASI, CHN,
+> pasteurization
+> MINVOLIM
+> JPN,
+> AMR
+> unitHandling
+> IVER
+> max
+> nanHandling
+> ON
+> min
+> language
+> FASTEXP
+> multiregression
+> Visualization
+> Fal
+> multiply
+> max
+> regular':
+> '1'
+> ts_max_diff
+> ts mean
+> 十C
+> median
+> tS_
+ 我又添加了universe和neutralization的提示. 
+
+需要注意的一点是, 把VsCode里`{ "editor.quickSuggestions": { "strings": true } } ` 这个选项打开. 不然字符串里不会触发提示.
+
+========================================================================================================================================================================
+
+---
+
+### 评论 #5 (作者: 顾问 WL27618 (Rank 97), 时间: 1年前)
+
+operators是从这个:
+
+" [https://api.worldquantbrain.com/operators](https://api.worldquantbrain.com/operators) "
+
+settings是从这个:
+
+async with session.options(' [https://api.worldquantbrain.com/simulations](https://api.worldquantbrain.com/simulations) ') as response:
+        settings = await response.json()
+
+api下载
+
+========================================================================================================================================================================
+
+---
+
+### 评论 #6 (作者: ML42552, 时间: 1年前)
+
+太强了文姐，已经用起来了，感谢分享！现在敲vscode就像在simulate页面，非常方便！！！再pua一下，可以优化一下datafield的自动填充功能，嘻嘻
+
+--------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------
+
+祝愿文姐下赛季gm，base天天60刀！！！！
+
+---
+
+### 评论 #7 (作者: ST57347, 时间: 1年前)
+
+厉害，我也用上，谢谢分享了==================================================================================================================
+
+---
+
+### 评论 #8 (作者: 顾问 WL27618 (Rank 97), 时间: 8个月前)
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Isel'
+> Selection:
+> author_activity
+> From group:
+> /selection
+> selection:
+> author_distinct_count_datafield
+> Selection:
+> author_distinct_count_dataset
+> author_distinct_count_datafield from 9
+> Selection:
+> author_distinct_count_datasetcategory
+> /selection
+> selection: author_distinct_count_operator
+> selection:
+> author_distinct_count_regions
+> Selection:
+> author_distinct_quarter_count_datafield
+> Selection:
+> author_distinct_quarter_count_dataset
+> selection: author_distinct_quarter_count_datasetcate。
+> selection:
+> author_distinct_quarter_count_operator
+> selection: author_fitness
+> Selection:
+> author_prod_correlation
+
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> /cd'
+> COmbo:
+> alpha
+> From group:
+> /combo
+> Combo:
+> drawdown
+> Combo:
+> hold
+> alpha from group
+> /combo
+> Combo:
+> hold_shares
+> Combo:
+> hold_value
+> combo: long_count
+> combo:  long_value
+> Combo:
+> Combo: returns
+> combo: short_count
+> Combo:
+> shortvalue
+> Comho:
+> +rade
+> pnl
+> Lpnl
+> pnl
+ 添加sa fields的提示. 
+
+用法稍微有点不一样, 用/selection和/combo 呼出. 主要考虑有些冷门的fields使用频率低, 应该不记得前缀.
+
+api是
+
+[https://api.worldquantbrain.com/suggest/fields](https://api.worldquantbrain.com/suggest/fields)  这个
+
+====================================================================================
+
+====================================================================================
+
+---
+
+### 评论 #9 (作者: PL95083, 时间: 6个月前)
+
+厉害了，大佬
+
+---
+
+### 评论 #10 (作者: YL65198, 时间: 6个月前)
+
+感谢大佬，非常有帮助
+
+---
+
