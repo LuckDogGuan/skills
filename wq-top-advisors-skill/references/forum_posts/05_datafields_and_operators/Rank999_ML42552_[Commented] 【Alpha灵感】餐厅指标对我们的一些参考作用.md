@@ -1,0 +1,384 @@
+# 【Alpha灵感】餐厅指标对我们的一些参考作用
+
+- **链接**: [Commented] 【Alpha灵感】餐厅指标对我们的一些参考作用.md
+- **作者**: ML42552
+- **发布时间/热度**: 1年前, 得票: 1
+
+## 帖子正文
+
+文章链接： [[2501.03862] Rendezfood: A Design Case Study of a Conversational Location-based Approach in Restaurants](https://arxiv.org/abs/2501.03862)
+
+# Rendezfood: A Design Case Study of a Conversational Location-based Approach in Restaurants
+
+# 假设我们有以下“餐厅指标”作为输入（这些在真实的WorldQuant环境中需要被替换为金融数据）：
+# restaurant_rating: 餐厅评分（可以视为某种“价格”指标）
+# customer_flow: 顾客流量（可以视为“交易量”指标）
+# menu_price_change: 菜品价格变化率（可以视为某种“动量”指标）
+
+# 注意：以下表达式是概念性的，并不是真正的WorldQuant代码。
+
+# 步骤1: 定义基础变量
+# 这些变量将代表我们的“餐厅指标”，并需要在每个时间点进行更新。
+
+# 步骤2: 计算策略信号
+# 我们可以构建一个策略信号，该信号基于餐厅评分的变化、顾客流量的增加或减少，以及菜品价格的变化率。
+# 例如，一个可能的策略是：当餐厅评分上升且顾客流量增加时，我们认为这是一个积极的信号；而当菜品价格急剧上涨时，我们可能认为这是一个消极的信号。
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Settings
+> ASIIDIIMINVOLIM
+> Convert to Multi-Sir
+> LNGUAGE
+> INSTRUMENT TYPE
+> Fast Expression
+> Equity
+> REGION
+> UNIVERSE
+> DELAY
+> ASI
+> MINVOLIN
+> NEUTRALIZATION
+> DECAY
+> TRUNCATION
+> Market
+> 0.08
+> PASTEURIZATION
+> UNIT HANDLING
+> NAN HANDLING
+> TEST PERIOD
+> On
+> Verify
+> Off
+> YEARS
+> MONTHS
+> Save a5 Default
+> Apply
+
+
+模板：
+
+A=ts_corr(close, volume, 20) > 0.5;
+
+B=group_backfill(winsorize(ts_backfill({data},5),std=4),market,22, std=4.0);
+
+trade_when(A, B, -1)
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Aggregate Data
+> Sharpe
+> TurnoVer
+> Fitness
+> Returns
+> Drawdown
+> Marain
+> 1.32
+> 2.689
+> 1.48
+> 15.809
+> 11.329
+> 118.089600
+> Year
+> Sharpe
+> Turnover
+> Fitness
+> Returns
+> Drawdown
+> Margin
+> Long Count
+> Short Count
+> 2012
+> 0.00
+> 0.0095
+> .00
+> 00N
+> 0.0095
+> OOSoo
+> 2013
+> 0.00
+> 0.0035
+> 0.00
+> 0.0095
+> 0.0095
+> OOSoo
+> 2014
+> UUU
+> 3.0035
+> ,00
+> 0.009
+> 0.00q
+> OO9uoo
+> 2015
+> 0.00
+> 0.0035
+> 0.009
+> 0.00q
+> OO9uoo
+> 2015
+> 0.00
+> 0.0035
+> 00N
+> 0.00q
+> OO9uoo
+> 2017
+> 0.00
+> 0.0035
+> 0.009
+> 0.00q
+> OO9uoo
+> 2018
+> 2.14
+> 5.0795
+> 2.50
+> 17.0595
+> 7.5995
+> 67.25900
+> 1792
+> 360
+> 2019
+> 0.23
+> 2.3095
+> 0,09
+> 2.0795
+> 11.3695
+> -18.059300
+> 1673
+> 1605
+> 2020
+> 0.51
+> 3.3235
+> 141
+> 38
+> 12.2495
+> 38.43900
+> 1334
+> 1507
+> 2021
+> 0.37
+> 3.9135
+> 0.16
+> 2.4095
+> 4.8790
+> 12.25900
+> 2282
+> 895
+> 2021
+> 3.45
+> 3.0235
+> 5.02
+> 26.5035
+> 3.149
+> 175.499600
+> 2545
+> 2065
+> 2022
+> 0.44
+> 2.3835
+> 0.32
+> 6.479
+> 11.329
+> 54.489600
+> 2319
+> 2009
+
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> D
+> Correlation
+> Self Correlation
+> Maximun
+> Winimum
+> Last Run:
+> Prod Correlation
+> Maximum
+> Winimum
+> Last Run:
+> 01/1312025,
+> 12.014M
+> 0.5752
+> -0.4815
+> 1N
+> 10OK
+> 寰
+> 1OK
+> 昱
+> 8
+> 100
+> MoT
+
+
+GLB 的表现
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Aggregate Data
+> Sharpe
+> Turnover
+> Fitness
+> Rezurns
+> DrawdOwn
+> Marsin
+> 1.37
+> 4.029
+> 0.98
+> 6.349
+> 3.249
+> 31.509600
+> Year
+> Sharpe
+> Turnover
+> Fitness
+> Returns
+> Drawdown
+> Margin
+> Long Count
+> Short Count
+> 2012
+> 0.77
+> 12.519
+> 0.54
+> -5.3135
+> 7.5535
+> 10.009c
+> 779
+> 825
+> 2013
+> 0.75
+> 5.483
+> 0.36
+> -2.9535
+> 1735
+> 10.829500
+> 1172
+> 497
+> 2012
+> -0.60
+> 4.43q
+> 0.23
+> 2.6395
+> 4.3035
+> 879500
+> 1367
+> 1361
+> 2015
+> 1.10
+> 4.2796
+> 0.52
+> 3.9935
+> 3.5335
+> 18.589500
+> 1267
+> 1458
+> 2015
+> 0.56
+> 4.1096
+> 0.24
+> 2.3895
+> 2.7895
+> 5090
+> 1130
+> 1565
+> 2017
+> 1.27
+> 5.3696
+> 0.53
+> 3.0795
+> 3.3835
+> 5590
+> 1251
+> 1538
+> 2018
+> 1.31
+> 4.50q6
+> 0.92
+> 5.1335
+> 2.3935
+> 27.25950
+> 1277
+> 1474
+> 2019
+> -2.09
+> 4.583
+> +59
+> -8.1335
+> 9.2035
+> -34.759600
+> 185
+> 1578
+> 2020
+> 0.55
+> 5.2496
+> 0.35
+> -4.9235
+> 14.5735
+> 18.779503
+> 1325
+> 1422
+> 2021
+> 5.95q6
+> 0.44
+> 3.0195
+> 2.9935
+> 10.
+> So
+> 1254
+> 500
+> 2021
+> 0.97
+> 4.243
+> 0.54
+> 3.8235
+> 1.3135
+> 13.019503
+> 1263
+> 1445
+> 2022
+> 1.65
+> 3.339
+> 1.36
+> 3.5335
+> 3.2495
+> 44.509b0
+> 1219
+> 1445
+
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Correlation
+> Self Correlation
+> Maximun
+> Winimum
+> Last Run:
+> Prod Correlation
+> Maximum
+> Winimum
+> Last Run:
+> 01/13/2025,
+> 12.054N
+> 0.3379
+> -0.4194
+> TN
+> 1Ok
+> 鬓
+> 昱
+> 8
+> 100
+> MOT
+> ~0.7.
+
+
+读论文系列目前对自己来说还是有点难度，最大的难点在找到有效的论文，其次是对自己operators 的熟悉程度，这几天刚把自己所有的operators借助大语言模型学习了一番，想要创造自己的模板还是任重而道远呀
+
+---
+
+## 讨论与评论 (1)
+
+### 评论 #1 (作者: 顾问 LW67640 (小虎) (Rank 24), 时间: 1年前)
+
+为什么要使用group_backfill呢？
+
+---
+

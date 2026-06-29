@@ -1,0 +1,499 @@
+# 【新人科普，老人必读】最全Product Correlation攻略，理解PC与顾问收入的密切关系置顶的
+
+- **链接**: https://support.worldquantbrain.com[L2] 【新人科普老人必读】最全Product Correlation攻略理解PC与顾问收入的密切关系置顶的_35129651186967.md
+- **作者**: MH33574
+- **发布时间/热度**: 9个月前, 得票: 122
+
+## 帖子正文
+
+## 引言：为什么我们要关心 PC？
+
+ **降低 PC 是提升收益和保证账号健康的最重要因素之一** 。
+
+1. PC的高低直接影响个人短期（base payment)和长期收入 (quarterly payment),
+2. PC的高低间接影响Value Factor，从而再次影响收入
+3. 高PC alpha 无法入库，无法参与比赛，长期提交大量高pc alpha，可能会导致账户封禁
+
+## 一、理解Product Correlation
+
+### 什么是 Product Correlation（PC）？
+
+PC 衡量一个 alpha 与平台中其他 顾问提交的alpha 的相关性，其计算公式和自相关类似，为最近四年PNL 每日变化（diff）的皮尔逊相关性系数。
+
+### PC高低与收入的关系
+
+顾问提交的alpha被平台接收后，会进行多次筛选以决定是否对平台有用，其中最重要的筛选就是PC。当PC大于0.7，则被认为是相同/及其相近的alpha，则该alpha不会被平台采用，因此也不会有机会获得任何weight。在顾问协议中披露的每日base payment 计算公式中也明确提到与base payment与PC的负相关性。通常来说，当pc< 0.5 会被认为是比较独特的因子，从而会获得更高的base payment，也更有机会被基金经理采纳而获得weight，进而获得更高的quarterly payment。
+
+而更低的PC也意味着更低的SC，组合的correlation 越低，也会进一步提升组合的整体多样性表现，从而获得更好的value factor。从个人经验看，在点塔的时候偶尔提交了更高的pc alpha，相应的该月份的vf就会受到影响。不知道平台在计算vf的时候是否对高pc有额外的惩罚系数。
+
+### 举例说明PC高低与收入的实证
+
+Alpha 1： PC 0.49的SA，获得了58.97的 base payment
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> anonymoUs
+> Super
+> ACTIVE
+> 08/30/2025 EDT
+> JPN
+> TOP1600
+> 0.31
+> 0.49
+
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Base Payment
+> 08/30/2025
+> Super:
+> 58.97
+> Regular:
+> 7.94
+> Total:
+> 66.91
+> 40
+> 20
+> 28.
+> 29.
+> 30.
+> 31 _
+> 1.Sep
+> 2.Sep
+> Aug
+> Aug
+> Aug
+> Aug
+
+
+Alpha 2：SAC 期间的一个表现更好的alpha，PC 0.68，只获得了9.69 USD的收入。而7月14日一个0.73的pc 只获得了5.4USD的收入。对不起当时0.9+的VF
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> Base Payment
+> 07/19/2025
+> Super:
+> 9.69
+> Regular:
+> 8.10
+> 15
+> Total:
+> 17.79
+> 10
+> 14.Jul
+> 15.Jul
+> 16.Jul
+> 17.JUl
+> 18.Jul
+> 19.Jul
+> 20.Jul
+
+
+# **二、如何检查PC并降低PC的实操**
+
+**获取PC的代码：论坛有很多，部分同学反馈没有权限，已更新在评论区**
+
+[https://support.worldquantbrain.com/hc/zh-cn/community/posts/33601626915351-%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96prod-correlation%E7%9A%84python%E4%BB%A3%E7%A0%81](/hc/zh-cn/community/posts/33601626915351-%E7%9B%B4%E6%8E%A5%E8%8E%B7%E5%8F%96prod-correlation%E7%9A%84python%E4%BB%A3%E7%A0%81)
+
+**几个注意事项：**
+
+1. 不建议直接只用check submission的接口，会更慢，因为要检查其他的测试比如自相关，而自相关等检测都可以在本地完成，效率更高
+2. 该接口也会限流，甚至影响提交alpha，建议做一些在本地的限流，这样不触发平台限流，从而获得整体的结果最优（代码如下，可以自己调整睡眠时间）
+3. 极少数情况会pc通过但是提交失败，这是因为pc是用的缓存数据，在pc检查和提交之间如果别人交了类似的会在提交时候出现pc不过的情况，但这种情况极少极少。
+
+```
+s = login()start_time = datetime.now()pass_pc_ids = []last_request_time = datetime.now()max_sleep_time = 60 * 60 # 最大睡眠时间1小时current_sleep_time = 60 # 初始睡眠时间60秒定义重连时间间隔reconnect_interval = timedelta(hours=3.5)for id in batch_ids:# 检查是否需要重新登录current_time = datetime.now()if current_time - start_time >= reconnect_interval:s = login()start_time = current_time# 记录请求开始时间request_start_time = datetime.now()# 调用 get_prod_corrpc = get_prod_corr(s, id)# 记录请求结束时间request_end_time = datetime.now()request_duration = (request_end_time - request_start_time).total_seconds()# 检查相关性if pc > 0.7:set_alpha_properties(s,id,name_value,selection_desc=name_value,combo_desc=name_value,tags = ['PROD Correlation'])elif pc >0.5:set_alpha_properties(s,id,name_value,selection_desc=name_value,combo_desc=name_value,tags = ['ace_tag'])else:result = get_simulation_result_json(s,id)selection = result['selection']['code']tag_value = ['PC 0.5','Ready to Submit']name_value = result['name']if "own" in selection:color = 'GREEN'count = count+1else:color = 'None'combo = result['combo']['code']while len(selection)<100:selection = selection + selectionwhile len(combo)<100:combo = combo + combo set_alpha_properties(s,id,name_value,selection_desc=selection,combo_desc=combo,tags=tag_value,color=color)pass_pc_ids.append(id)print(id,pc)# 计算上次请求到本次请求的时间间隔time_since_last_request = (request_start_time - last_request_time).total_seconds()# 如果请求时间明显增加，调整睡眠时间if request_duration > current_sleep_time * 1.5:current_sleep_time = min(max_sleep_time, current_sleep_time * 2)else:current_sleep_time = 60 # 如果请求时间正常，恢复默认睡眠时间# 更新上次请求时间last_request_time = request_start_time# 等待当前睡眠时间time.sleep(current_sleep_time)print(len(pass_pc_ids))
+```
+
+## 三、如何降低 PC？
+
+Global 论坛有一篇外区的帖子，有些内容是很有可取之处的
+
+- [Reduce Production Correlations. – WorldQuant BRAIN](../顾问 CC40930 (Rank 95)/[Commented] Reduce Production Correlations_29301199149463.md)
+
+### 避免使用过于常见的 signal
+
+- 如单纯的暴力一二三阶，没有任何自己的迭代
+
+### 增加创新表达方式
+
+- 多尝试非线性组合、二阶交叉项、相对排名等。使用sigmoid，sign power，ts linear window等做一些数学变换
+- 尝试使用target tvr的几个operator来降低tvr的同时也会变化pnl从而降低pc （但有时会反而提高，因为别人也使用了该方法提交过）
+
+### 尝试多种region，unvierse和netralization 方式
+
+- 一些高pc的因子，在变换了中性化，unvierse和regioin后会有意想不到的收获，而这个可以代码工程化完成
+
+### 多尝试新的数据集
+
+- 当有新的数据集，新的unvnierse和新的region的时候是pc最低的时候，如TOPDIV3000，最近新上的数据集等
+
+### 使用独特的分组方式
+
+- 最常见的是group datafield （如other455），bucket分组
+
+### 当然王牌还是有自己的模版和自制数据
+
+### 如何快速总结已经提交alpha的PC：
+
+在alphas菜单中点击submitted，选中select column 勾选product correlation，已经提交alpha的PC一目了然
+
+
+> [!NOTE] [图片 OCR 识别内容]
+> 鬯2
+> Simulate
+> Alphas
+> Leamn
+> Data
+> Labs
+> Genius
+> 舀
+> Competitions (0)
+> 8 Team
+> Community
+> Consultant program
+> 《
+> Refer a friend
+> Select Columns
+> Summany
+> Properties
+> Settings
+> Perommance
+> Alphas
+> Nams
+> SzazUs
+> Resion
+> Instrument TypE
+> Sharpe
+> Rezurns
+> Competi-ion
+> Catesory
+> Universe
+> Delay
+> Pnl
+> Turnoer
+> Page size
+> Typ=
+> Color
+> Decay
+> Neutralization
+> Drawdown
+> Marsin
+> Fllter
+> LansuaEs
+> TaE
+> Truncation
+> Unit Handlins
+> Fitnsss
+> Book Sizs
+> Date Submit-ed (EST]
+> Hidgzn
+> NaN Handlins
+> Pasteurization
+> ~oun
+> Shor Count
+> Select Columns
+> Turnover
+> Tag
+> Favorite
+> Sharo 50
+> Sharpe 125
+> S-ar Date (EST
+> Sharpe 250
+> Sharpe 500
+> 22
+> See
+> OSIIS Razio
+> Pre Close Sharpe
+> 4.974
+> Pre-Close Razio
+> Self-Correlation
+> Prod-Correlation
+> Reset
+> Apply
+> Lns
+
+
+最后祝大家新的赛季VF和Genius双高！如果对你有用还请点赞评论！
+
+---
+
+## 讨论与评论 (30)
+
+### 评论 #1 (作者: KH94146, 时间: 7个月前)
+
+当我们思考一个问题的时候，可以对问题进行拆解，我们的目标是降低相关性
+
+alpha =  data + operator + settings (incl parameter)
+
+那相关性的决定因素就来自于以上三个部分，任何一个部分有一些突破的尝试都会让相关性有极大的改善
+
+---
+
+### 评论 #2 (作者: JM85274, 时间: 9个月前)
+
+很有帮助
+
+---
+
+### 评论 #3 (作者: MY82844, 时间: 9个月前)
+
+使用独特的分组这个，感觉有时候还受coverage影响，隐含的把原来的universe和coverage取了一个交集
+
+---
+
+### 评论 #4 (作者: YZ34957, 时间: 9个月前)
+
+获取PC代码的帖子没有权限看耶
+
+---
+
+### 评论 #5 (作者: 顾问 NL80893 (Rank 16), 时间: 9个月前)
+
+--------------------------------------------------------------------------------------------------------------------------
+
+哇哦！！！老顾问表示：“学到了！”
+
+--------------------------------------------------------------------------------------------------------------------------
+
+---
+
+### 评论 #6 (作者: XZ23611, 时间: 9个月前)
+
+右上角搜索框  语言调成中文    太多了
+
+---
+
+### 评论 #7 (作者: AL13375, 时间: 9个月前)
+
+大佬所说的“
+
+- 多尝试非线性组合、二阶交叉项、相对排名等。使用sigmoid，sign power，ts linear window等做一些数学变换
+- 尝试使用target tvr的几个operator来降低tvr的同时也会变化pnl从而降低pc （但有时会反而提高，因为别人也使用了该方法提交过）
+
+”
+
+确实时需要一些对操作符的理解，也需要去lab上去查看字段的数据分布情况，才能针对的起到效果，更多的是经验的积累吧，这一点我还差的很远，后续会持续在这个方向努力！
+
+期待大佬更多的分享！
+
+==========路漫漫其修远兮，吾将上下而求索==========
+
+---
+
+### 评论 #8 (作者: MY49971, 时间: 9个月前)
+
+深有同感，感觉0.7 -- 0.5 -- 0.3是一个门槛，收入有显著差别
+
+===================================================================================
+===================Talk is cheap,show me the alpha======================================
+
+---
+
+### 评论 #9 (作者: 顾问 SJ65808 (Rank 20), 时间: 9个月前)
+
+感谢楼主分享，要想高收入还是要低prod,高theme
+
+====================================================================================
+==================纸上得来终觉浅，绝知此事要躬行======================================
+
+---
+
+### 评论 #10 (作者: KH94146, 时间: 9个月前)
+
+```
+#  根据alpha ID 获取 prod correlationdef get_prod_corr(session, alpha_id):    response = session.get(f"https://api.worldquantbrain.com/alphas/{alpha_id}/correlations/prod")    if response.status_code == 200 and "records" in response.json():        columns = [dct["name"] for dct in response.json()["schema"]["properties"]]        self_corr_df = pd.DataFrame(response.json()["records"], columns=columns)        if not self_corr_df.empty:            print(f'{alpha_id} max: {response.json()["max"]} min: {response.json()["min"]}')            set_alpha_desc(session, alpha_id, f' max: {response.json()["max"]} min: {response.json()["min"]}')        return self_corr_df    else:        return pd.DataFrame(columns=["correlation"])# 因为经常第一次获取不到内容，可以调用这个函数来多次获取def get_prod_corr_waiting(session, alpha_id, max_times=3):    retry_count = 0    while retry_count < max_times:        try:            self_corr_df = get_prod_corr(session, alpha_id)            if not self_corr_df.empty:                return self_corr_df        except json.JSONDecodeError:            pass        retry_count += 1        time.sleep(60)  # Wait for 60 second before the next retry        print(retry_count)    return pd.DataFrame(columns=["correlation"])
+```
+
+---
+
+### 评论 #11 (作者: DG67284, 时间: 9个月前)
+
+对新人很有帮助，平时不太注意pc
+
+---
+
+### 评论 #12 (作者: LR93609, 时间: 9个月前)
+
+感谢分享，确实不错的帖子，仅从科普的角度而言
+
+本地化自检效率确实很高，不过要看电脑配置和提交的alpha数量，
+
+我之前提交到400个alpha的时候，每次自检也要花费不少时间，
+
+不过，这跟电脑配置关系很大，而且10年数据也比5年数据更费资源。
+
+其实我觉得，控制好自己的手就好，不要点的太频繁，基本上可行的，
+
+难道你的因子已经多到，需要批量处理了吗？
+
+还是说平时没有时间处理，集中处理一下？
+
+如果每提交一次，自检一次，这个频率你的电脑是否能够扛得住？
+
+如果真能扛得住，不考虑PC的情况，可以采用最大团法，
+
+先算出来哪个先交，哪个后交，能更大程度上提交因子数量。
+
+最大团法是什么？Kimi一下，含代码
+
+----------------------------------------------------------------------------------------------
+
+凡是发生，皆利于我；愿我所愿，尽是美好
+
+----------------------------------------------------------------------------------------------
+
+---
+
+### 评论 #13 (作者: AH18340, 时间: 9个月前)
+
+感谢大佬分享，“长期提交大量高pc alpha，可能会导致账户封禁”居然是会封账户，之前都不知道，学到了
+
+=============================================================================
+
+The best time to plant a tree is 20 years ago. The second-best time is now.
+
+=============================================================================
+
+---
+
+### 评论 #14 (作者: MH33574, 时间: 9个月前)
+
+[LR93609](/hc/en-us/profiles/30244554462231-LR93609)
+
+难得有价值的留言。一些comments
+
+1. 计算本地自相关不需要10年，只保留截取最近四年即可
+
+2. 没必要对400个做自相关，只对该region 和delay 下的做计算即可，我的本地mac是8G，大概3-5分钟可以完成100个自相关，还是很快的
+
+3. pnl可以存在本地csv或者部署数据库，我这个月刚部署了数据库，有新的alpha提交了以后就会对待提交的库更新一次SC的值
+
+4. 难道你的因子已经多到，需要批量处理了吗？有300+ ready to submit。。。 但只是纸面上过了平台测试和自己的一些stats 限制的测试，提交还是都手动看的。那个最大团毛老师讲过，不缺数量的情况下，对portfolio不是最优解
+
+---
+
+### 评论 #15 (作者: JX14975, 时间: 9个月前)
+
+oth455分组感觉没跑出来过对1阶非oth455做主信号时的alpha的有效提升，我跑了1个月就把这些从二阶中停了，楼主介意分享一下这些分组的有效优化率吗？
+
+---
+
+### 评论 #16 (作者: SZ20589, 时间: 9个月前)
+
+感谢大佬分享，我现在也确实对pro corr重视起来了，但是一开始确实有点不适应，但是看了大佬的方法后，豁然开朗了，如果每提交一次，自检一次，这个频率很容易会限流。
+
+还有学到了0.7 -- 0.5 -- 0.3，pc越低就收入就越高的关系，我之前还是只要小于0.7就交，完全没有想到这一点
+
+感谢大佬
+
+=============================================================================
+
+一分耕耘，一分收获
+
+=============================================================================
+
+---
+
+### 评论 #17 (作者: AM12075, 时间: 9个月前)
+
+第三部分总结了降低因子相关性的一些实用经验，整体思路值得借鉴，强调避免重复使用过于常见的线性或低阶表达式，而应通过非线性组合、交叉项和数学变换来提升因子的独特性，这是减少“同质化”因子的关键。同时提醒利用不同的region、universe和中性化方式，可以在相同信号的基础上获得差异化表现，这对于降低production correlation很有帮助，引入新数据集和独特分组方式的建议，也体现了在数据维度上寻求突破的重要性。作者如果能够分享一些自己降低pc的实际例子就更好了，比如微调哪个部分降低pc最有效，可以截图一些实际调整的例子出来。
+
+---
+
+### 评论 #18 (作者: XG41865, 时间: 9个月前)
+
+set_alpha_desc这个函数内容是啥？
+
+---
+
+### 评论 #19 (作者: DT22008, 时间: 9个月前)
+
+第一次VF不小心变成0.01
+
+---
+
+### 评论 #20 (作者: 顾问 YH25030 (Rank 31), 时间: 9个月前)
+
+这个月开始我就可以用程序检查prod corr。我发现如果睡眠时间太短（比如60秒），很容易触发限流，大大增加整个程序的运行时间。我尝试了睡眠60秒，120秒，180秒。我现在是睡眠时间调整在180秒，整体感觉还行。如果没有同时提交因子，检查Prod corr程序不会太慢。
+
+---
+
+### 评论 #21 (作者: ST61360, 时间: 9个月前)
+
+感谢总结分享，以前只是听群友说高PC会影响base payment, 具体影响多少，没有直观感受；今天楼主通过不同的pc数据做payment对比分析，发现高pc对收入的影响还是比较大的，令人印象深刻。以后的的alpha研究中，会更关注这个指标。
+
+---
+
+### 评论 #22 (作者: DT40395, 时间: 9个月前)
+
+感谢大佬分享！满满的干货
+
+---
+
+### 评论 #23 (作者: DT40395, 时间: 9个月前)
+
+此外，请问大佬可以整理一些可以降低PC的operator吗？常用的一些组合出的因子确实PC很容易就高了
+
+---
+
+### 评论 #24 (作者: ZJ47021, 时间: 9个月前)
+
+代码可以直接用吗？在什么环境中用呢？
+
+---
+
+### 评论 #25 (作者: TS96358, 时间: 9个月前)
+
+=====================早日冲上GrandMaster============================================
+
+感谢分享，让我又知道了一些红线和前进的方向，低PC,低PC,低PC
+
+==================纸上得来终觉浅，绝知此事要躬行======================================
+
+---
+
+### 评论 #26 (作者: MH33574, 时间: 9个月前)
+
+[JX14975](/hc/en-us/profiles/29548387470487-JX14975)
+
+都放到二阶里不现实，我的感觉是对于现成的group 分组 可以微降PC （0.05 以内）但是无法做到翻天覆地的改变，大幅变化还是靠中性化这些，  也可以去看看group casten （拼写不一定对）那个把两个group 放在一起的，还有一个是 ops是在第一分组缺失时候补充第二分组  都是一些思路
+
+---
+
+### 评论 #27 (作者: 顾问 ES81271 (Rank 25), 时间: 9个月前)
+
+纸上得来终觉浅，绝知此事要躬行
+
+---
+
+### 评论 #28 (作者: JC31003, 时间: 9个月前)
+
+对我这个小白很受用，谢谢分享
+
+---
+
+### 评论 #29 (作者: SQ15289, 时间: 9个月前)
+
+其实大家在做super alpha的时候，可以setting先设置Neutralization为None，然后做出来的super alpha的prod corr在0.5附近的时候再进行对setting的Neutralization更换为别的，这样基本可以大大降低super alpha的prod corr，不过也可能有副作用就是sharpe和fitness都变成低于5的情况，不过这样也其实有提高的方法，如果你的decay天数设置的很高的话，你可以直接把decay弄成0，这样可能可以把你的sharpe和fitness提高到5，不过并不是每一个super alpha都可以这样，建议大家多多尝试不同的方法。祝大家都有高base。
+
+---
+
+### 评论 #30 (作者: LH44620, 时间: 9个月前)
+
+===============================LH44620的评论===============================
+
+2025/09/29
+
+让大家都提交低product_correlation的alpha的想法是很好的。这个指标很直观地反映了consultant提交的alpha对于整个world quant brain平台的贡献程度！大家加油积极参加啊！
+
+----------------------------------------------------加油----------------------------------------------------
+
+- 价格图形的运行不是随机的，然而，它们足够接近随机。
+- 我们不要从模型开始，我们要从数据开始。我们没有任何先入为主的观念。
+- 价格图形的运行不是随机的，然而，它们足够接近随机。
+
+===============================LH44620的评论===============================
+
+---
+
